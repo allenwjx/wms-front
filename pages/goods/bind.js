@@ -80,7 +80,7 @@ Page({
                     //   wx.showToast({ title: '绑定成功' })
                     console.log(res.data.data)
                     that.setData({ goodsList: res.data.data })
-                } 
+                }
             }
         })
 
@@ -92,22 +92,48 @@ Page({
                     //   wx.showToast({ title: '绑定成功' })
                     console.log(res.data.data)
                     that.setData({ agentList: res.data.data })
-                } 
+                }
             }
         })
     },
 
     bindAgentChange: function (e) {
-        console.log('picker发送选择改变，携带值为', e.detail.value)
-        this.setData({
-            agentIndex: e.detail.value
+        let that = this;
+        that.setData({
+            agentIndex: e.detail.value,
+            agentId: that.data.agentList[e.detail.value].id
         })
     },
 
     bindGoodsChange: function (e) {
-        console.log('picker发送选择改变，携带值为', e.detail.value)
-        this.setData({
-            goodsIndex: e.detail.value
+        let that = this;
+        that.setData({
+            goodsIndex: e.detail.value,
+            bindCommodityId: that.data.goodsList[e.detail.value].id
         })
     },
+
+    doScan: function () {
+        let that = this;
+        wx.scanCode({
+            success: (res) => {
+                console.log(res)
+                wx.request({
+                    url: res.result.split('?')[0] + '?action=bind',
+                    method: "POST",
+                    data: {
+                        commodityId: util.getUrlParam(res.result, 'commodityId'),
+                        serialNo: util.getUrlParam(res.result, 'serialNo'),
+                        bindCommodityId: that.data.bindCommodityId,
+                        agentId: that.data.agentId
+                    },
+                    success: function (res) {
+                        if (res.data.success) {
+                            wx.showToast({ title: '绑定成功' })
+                        }
+                    }
+                })
+            }
+        })
+    }
 })

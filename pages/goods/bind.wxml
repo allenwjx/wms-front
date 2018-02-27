@@ -21,3 +21,6 @@
         </view>
     </view>
 </view>
+<view class='weui-btn-area'>
+    <button class="weui-btn" type="primary" bindtap="doScan">扫二维码绑定</button>
+</view>
