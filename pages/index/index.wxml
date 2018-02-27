@@ -1,0 +1,14 @@
+<swiper indicator-dots="{{indicatorDots}}"
+  autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+  <block wx:for="{{imgUrls}}">
+    <swiper-item>
+      <image src="{{item}}" class="slide-image" width="355" height="150"/>
+    </swiper-item>
+  </block>
+</swiper>
+<view class='container'><text>此处留白</text></view>
+<view class="tabbar">
+  <navigator url="/pages/send/index" >寄快递</navigator>
+  <navigator url="/pages/search/index">查快递</navigator>
+  <navigator url="/pages/me/index">我</navigator>
+</view>

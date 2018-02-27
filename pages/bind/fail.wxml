@@ -1,0 +1,15 @@
+<!--pages/bind/fail.wxml-->
+<view class="weui-msg">
+    <view class="weui-msg__icon-area">
+        <icon type="warn" size="93"></icon>
+    </view>
+    <view class="weui-msg__text-area">
+        <view class="weui-msg__title">关联失败</view>
+        <view class="weui-msg__desc">{{errorMsg}}</view>
+    </view>
+    <view class="weui-msg__opr-area">
+        <view class="weui-btn-area">
+            <button class="weui-btn custom" bindtap="doScan">返回</button>
+        </view>
+    </view>
+</view>

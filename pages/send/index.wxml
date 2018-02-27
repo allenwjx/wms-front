@@ -1,0 +1,20 @@
+<!--pages/send/index.wxml-->
+<view class='sendbox'>
+    <view class='row'>
+        <i class="icon-txt icon-txt-black">寄</i>
+        <text class='name'>张三</text>
+        <text class='city'>苏州市</text>
+        <text class='address'>江苏省苏州市吴中区</text>
+        <navigator class=''>地址簿</navigator>
+    </view>
+    <view class='row'>
+        <i class="icon-txt icon-txt-red">寄</i>
+        <text class='name'>张三</text>
+        <text class='city'>苏州市</text>
+        <text class='address'>江苏省苏州市吴中区</text>
+        <navigator class=''>地址簿</navigator>
+    </view>
+</view>
+<view class='weui-btn-area'>
+    <button class="weui-btn" type="primary">添加货物</button>
+</view>

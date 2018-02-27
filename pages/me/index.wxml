@@ -1,0 +1,30 @@
+<!--pages/me/index.wxml-->
+<view class='page'>
+    <view class='user'>
+        <view class='face'>
+            <image src='{{userInfo.avatarUrl}}'></image>
+        </view>
+        <text>{{userInfo.nickName}}</text>
+        <navigator url='/pages/bind/index'>
+            <text>关联</text>
+        </navigator>
+    </view>
+    <view class="weui-cells weui-cells_after-title">
+        <navigator url="/pages/me/express" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__bd">我的快递</view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+        </navigator>
+        <navigator url="/pages/" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__bd">货物验证</view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+        </navigator>
+        <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__bd">常用地址</view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+        </navigator>
+        <navigator url="/pages/goods/bind" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <view class="weui-cell__bd">货物绑定</view>
+            <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+        </navigator>
+    </view>
+</view>

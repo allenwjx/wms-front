@@ -1,0 +1,14 @@
+<!--pages/bind/success.wxml-->
+<view class="weui-msg">
+    <view class="weui-msg__icon-area">
+        <icon type="success" size="93"></icon>
+    </view>
+    <view class="weui-msg__text-area">
+        <view class="weui-msg__title">关联成功</view>
+    </view>
+    <view class="weui-msg__opr-area">
+        <view class="weui-btn-area">
+            <button class="weui-btn custom" bindtap='goBack'>返回首页</button>
+        </view>
+    </view>
+</view>
