@@ -3,6 +3,7 @@
         "pages/index/index",
         "pages/send/index",
         "pages/search/index",
+        "pages/search/agent",
         "pages/me/index",
         "pages/bind/index",
         "pages/bind/success",

@@ -77,21 +77,17 @@ Page({
             data: {},
             success: function (res) {
                 if (res.data.success) {
-                    //   wx.showToast({ title: '绑定成功' })
-                    console.log(res.data.data)
                     that.setData({ goodsList: res.data.data })
                 }
             }
         })
 
         wx.request({
-            url: config.api.getAgentList,
+            url: config.api.getManufacturerList,
             data: {},
             success: function (res) {
                 if (res.data.success) {
-                    //   wx.showToast({ title: '绑定成功' })
-                    console.log(res.data.data)
-                    that.setData({ agentList: res.data.data })
+                    that.setData({ manufacturerList: res.data.data })
                 }
             }
         })
@@ -110,6 +106,29 @@ Page({
         that.setData({
             goodsIndex: e.detail.value,
             bindCommodityId: that.data.goodsList[e.detail.value].id
+        })
+    },
+
+    bindManufacturerChange: function (e) {
+        let that = this;
+        that.setData({
+            manufacturerIndex: e.detail.value
+        })
+
+        wx.request({
+            url: config.api.getGoodsFilterList,
+            data: { manufacturerId:that.data.manufacturerList[e.detail.value].id},
+            success: function (res) {
+                if (res.data.success) {
+                    that.setData({ goodsList: res.data.data })
+                }
+            }
+        })
+    },
+
+    searchAgent: function () {
+        wx.navigateTo({
+            url: '../../pages/search/agent'
         })
     },
 

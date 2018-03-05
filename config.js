@@ -12,7 +12,10 @@ var config = {
         bind: `${base}/bind`,
         product: `${base}/data/product`,
         getGoodsList: `${base}/commodity/list`,
+        getGoodsFilterList: `${base}/commodity/filterList`,
         getAgentList: `${base}/agent/list`,
+        getAgentFilterList: `${base}/agent/filterList`,
+        getManufacturerList: `${base}/manufacturer/list`,
     }
 };
 
