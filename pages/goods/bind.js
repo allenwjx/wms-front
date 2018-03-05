@@ -144,12 +144,16 @@ Page({
                         commodityId: util.getUrlParam(res.result, 'commodityId'),
                         serialNo: util.getUrlParam(res.result, 'serialNo'),
                         bindCommodityId: that.data.bindCommodityId,
-                        agentId: that.data.agentId
+                        agentId: that.data.agent.id
                     },
                     success: function (res) {
+                        console.log(res)
                         if (res.data.success) {
                             wx.showToast({ title: '绑定成功' })
                         }
+                    },
+                    fail:function(e){
+                        console.log(e)
                     }
                 })
             }
