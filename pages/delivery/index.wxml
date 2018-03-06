@@ -4,14 +4,14 @@
     <i class="icon-txt icon-txt-blue">寄</i>
     <text class='name'>{{sender.name}}</text>
     <text class='city'>{{sender.city}}</text>
-    <text class='address'>{{sender.addr}}</text>
+    <text class='address'>{{sender.address}}</text>
     <i class="weui-cell__ft weui-cell__ft_in-access"></i>
   </view>
   <view class='row' bindtap='addPoster' data-type='2'>
     <i class="icon-txt icon-txt-oragne">收</i>
     <text class='name'>{{reciever.name}}</text>
     <text class='city'>{{reciever.city}}</text>
-    <text class='address'>{{reciever.addr}}</text>
+    <text class='address'>{{reciever.address}}</text>
     <i class="weui-cell__ft weui-cell__ft_in-access"></i>
   </view>
 </view>
