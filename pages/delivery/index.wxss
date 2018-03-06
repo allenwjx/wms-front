@@ -22,18 +22,19 @@
 }
 
 .sendbox .row .name{
-    width: 80rpx;
+    width: 120rpx;
     margin-right: 20rpx;
 }
 
 .sendbox .row .city{
-    width: 60rpx;
+    width: 90rpx;
     overflow: hidden;
     margin-right: 20rpx;
 }
 
 .sendbox .row .address{
-    width: 300rpx;
+    width: 330rpx;
+    text-align: right
 }
 
 .sendbox .row navigator{

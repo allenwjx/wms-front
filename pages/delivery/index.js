@@ -1,11 +1,14 @@
 // pages/send/index.js
+let initSender = { name: '姓名', city: '城市', addr: '发件地址'};
+let reciverSender = { name: '姓名', city: '城市', addr: '发件地址' };
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-  
+    sender: initSender,
+    reciever: reciverSender
   },
 
   /**
@@ -62,5 +65,19 @@ Page({
    */
   onShareAppMessage: function () {
   
+  },
+
+  addPoster: function(event) {
+    let posterType = event.currentTarget.dataset.type;
+    if (posterType == 1) {
+      wx.navigateTo({
+        url: './sender/index'
+      });
+    } else {
+      wx.navigateTo({
+        url: './reciever/index'
+      });
+    }
+    
   }
 })

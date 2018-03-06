@@ -2,6 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/delivery/index",
+    "pages/delivery/sender/index",
+    "pages/delivery/reciever/index",
     "pages/inventory/index",
     "pages/personal/index",
     "pages/personal/order/index",

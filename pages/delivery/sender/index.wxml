@@ -1,0 +1,42 @@
+<view class="weui-cells weui-cells_after-title">
+  <view class="weui-cell weui-cell_input">
+    <view class="weui-cell__hd">
+      <view class="weui-label">寄件人</view>
+    </view>
+    <view class="weui-cell__bd">
+      <input class="weui-input" placeholder="请输入姓名" />
+    </view>
+  </view>
+  <view class="weui-cell weui-cell_input">
+    <view class="weui-cell__hd">
+      <view class="weui-label">手机号</view>
+    </view>
+    <view class="weui-cell__bd">
+      <input class="weui-input" placeholder="请输入手机号" />
+    </view>
+  </view>
+  <view class="weui-cell weui-cell_input">
+    <view class="weui-cell__hd">
+      <view class="weui-label">公司名称</view>
+    </view>
+    <view class="weui-cell__bd">
+      <input class="weui-input" placeholder="选填" />
+    </view>
+  </view>
+  <view class="weui-cell weui-cell_input">
+    <view class="weui-cell__hd">
+      <view class="weui-label">发货地址</view>
+    </view>
+    <view class="weui-cell__bd">
+      <input class="weui-input" bindfocus="bingAddressTap" value="{{addressLine}}" placeholder="江苏省 苏州市 工业园区" />
+    </view>
+  </view>
+  <view class="weui-cell weui-cell_input">
+    <view class="weui-cell__hd">
+      <view class="weui-label">详细地址</view>
+    </view>
+    <view class="weui-cell__bd">
+      <input class="weui-input" placeholder="详细地址（街道门牌号)" value="{{ADDRESS}}" />
+    </view>
+  </view>
+</view>
