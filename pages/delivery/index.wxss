@@ -1,4 +1,9 @@
-/* pages/send/index.wxss */
+text{
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+}
+
 .sendbox{
     border:1rpx solid #e0e0e0;
     margin: 30rpx 30rpx 0 30rpx;
