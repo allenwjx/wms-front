@@ -9,7 +9,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    orderIcon: '/images/list.png',
+    checkIcon: '/images/scan.png',
+    bindIcon: '/images/qrcode.png'
   },
 
   /**
