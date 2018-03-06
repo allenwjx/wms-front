@@ -1,26 +1,18 @@
 {
-    "pages": [
-        "pages/index/index",
-        "pages/send/index",
-        "pages/search/index",
-        "pages/search/agent",
-        "pages/me/index",
-        "pages/bind/index",
-        "pages/bind/success",
-        "pages/bind/fail",
-        "pages/address/index",
-        "pages/goods/index",
-        "pages/goods/bind",
-        "pages/order/index",
-        "pages/order/detail",
-        "pages/order/confirm",
-        "pages/order/success",
-        "pages/order/fail"
-    ],
-    "window": {
-        "backgroundTextStyle": "light",
-        "navigationBarBackgroundColor": "#fff",
-        "navigationBarTitleText": "卓尔航物流",
-        "navigationBarTextStyle": "black"
-    }
+  "pages": [
+    "pages/index/index",
+    "pages/delivery/index",
+    "pages/inventory/index",
+    "pages/personal/index",
+    "pages/personal/order/index",
+    "pages/personal/check/index",
+    "pages/personal/bind/index",
+    "pages/personal/bind/agent/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "小程序练习",
+    "navigationBarTextStyle": "black"
+  }
 }

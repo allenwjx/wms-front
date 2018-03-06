@@ -1,0 +1,25 @@
+<!--pages/me/index.wxml-->
+<view class='page'>
+  <view class='user'>
+    <view class='face'>
+      <image src='{{userInfo.avatarUrl}}'></image>
+    </view>
+    <text>{{userInfo.nickName}}</text>
+  </view>
+  <view class="weui-cells weui-cells_after-title">
+    <navigator url="/pages/personal/order/index" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+      <view class="weui-cell__bd">我的订单</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </navigator>
+    <!-- TODO: 货物验真只有代理人身份才能使用 -->
+    <navigator url="/pages/personal/check/index" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+      <view class="weui-cell__bd">货物验真</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </navigator>
+    <!-- TODO: 货物绑定只有管理员身份才能使用 -->
+    <navigator url="/pages/personal/bind/index" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+      <view class="weui-cell__bd">货物绑定</view>
+      <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </navigator>
+  </view>
+</view>
