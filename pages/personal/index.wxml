@@ -12,7 +12,7 @@
       <view class="weui-cell__ft weui-cell__ft_in-access"></view>
     </navigator>
     <!-- TODO: 货物验真只有代理人身份才能使用 -->
-    <navigator url="/pages/personal/check/index" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+    <navigator bindtap='doScan' url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
       <view class="weui-cell__bd">货物验真</view>
       <view class="weui-cell__ft weui-cell__ft_in-access"></view>
     </navigator>

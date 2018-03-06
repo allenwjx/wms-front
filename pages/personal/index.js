@@ -67,5 +67,45 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  /**
+   * 扫描商品上的二维码
+   */
+  doScan: function () {
+    let that = this;
+    wx.scanCode({
+      success: (response) => {
+        console.log(response);
+
+        // 获取绑定商品信息
+        wx.request({
+          url: response.result.split('?')[0] + '?action=view',
+          method: "GET",
+          data: {
+            commodityId: util.getUrlParam(response.result, 'commodityId'),
+            serialNo: util.getUrlParam(response.result, 'serialNo')
+          },
+
+          success: function (response) {
+            console.log(response)
+            if (response.data.success) {
+              var shipRecordDetails = JSON.stringify(response.data.data);
+              wx.navigateTo({
+                url: './check/index?shipRecordDetails=' + shipRecordDetails
+              })
+            } else {
+              wx.navigateTo({
+                url: '../message/fail?msg=' + response.data.errorMessage
+              })
+            }
+          },
+
+          fail: function (e) {
+            console.log(e);
+          }
+        });
+      }
+    });
   }
 })

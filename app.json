@@ -7,7 +7,9 @@
     "pages/personal/order/index",
     "pages/personal/check/index",
     "pages/personal/bind/index",
-    "pages/personal/bind/agent/index"
+    "pages/personal/bind/agent/index",
+    "pages/message/success",
+    "pages/message/fail"
   ],
   "window": {
     "backgroundTextStyle": "light",
