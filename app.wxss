@@ -54,6 +54,18 @@ page {
     background-color: #000;
 }
 
+.icon-txt-blue{
+    background-color: #00aaee;
+}
+
 .icon-txt-red{
     background-color: #ff0000;
+}
+
+.icon-txt-green{
+    background-color: #66cc00;
+}
+
+.icon-txt-oragne{
+    background-color: #ff8000;
 }

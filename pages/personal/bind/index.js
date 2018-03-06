@@ -119,7 +119,7 @@ Page({
       data: { manufacturerId: that.data.manufacturerList[e.detail.value].id },
       success: function (res) {
         if (res.data.success) {
-          that.setData({ goodsList: res.data.data })
+          that.setData({ goodsList: res.data.data });
         }
       }
     })
@@ -135,7 +135,6 @@ Page({
     let that = this;
     wx.scanCode({
       success: (res) => {
-        console.log(res)
         wx.request({
           url: res.result.split('?')[0] + '?action=bind',
           method: "POST",
@@ -146,13 +145,15 @@ Page({
             agentId: that.data.agent.id
           },
           success: function (res) {
-            console.log(res)
             if (res.data.success) {
-              wx.showToast({ title: '绑定成功' })
+              wx.showToast({ title: '绑定成功' });
             }
           },
           fail: function (e) {
             console.log(e)
+            wx.navigateTo({
+              url: '../message/fail?msg=货物绑定失败'
+            });
           }
         })
       }

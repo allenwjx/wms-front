@@ -17,7 +17,6 @@ Page({
   onLoad: function (options) {
     wx.setNavigationBarTitle({ title: '货物详情' });
     var shipRecordDetails = JSON.parse(options.shipRecordDetails);
-    console.log(shipRecordDetails);
     this.setData({
       shipRecordDetails: shipRecordDetails
     });

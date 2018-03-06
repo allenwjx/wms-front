@@ -76,8 +76,6 @@ Page({
     let that = this;
     wx.scanCode({
       success: (response) => {
-        console.log(response);
-
         // 获取绑定商品信息
         wx.request({
           url: response.result.split('?')[0] + '?action=view',
@@ -88,7 +86,6 @@ Page({
           },
 
           success: function (response) {
-            console.log(response)
             if (response.data.success) {
               var shipRecordDetails = JSON.stringify(response.data.data);
               wx.navigateTo({
@@ -103,6 +100,9 @@ Page({
 
           fail: function (e) {
             console.log(e);
+            wx.navigateTo({
+              url: '../message/fail?msg=扫码验真失败'
+            });
           }
         });
       }

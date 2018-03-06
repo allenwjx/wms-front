@@ -8,9 +8,3 @@
 <view class='container'>
   <text>此处留白</text>
 </view>
-<view class="tabbar">
-  <navigator url="/pages/delivery/index">寄快递</navigator>
-  <!-- <navigator url="/pages/search/index">查快递</navigator> -->
-  <navigator url="/pages/inventory/index">库存</navigator>
-  <navigator url="/pages/personal/index">我的</navigator>
-</view>

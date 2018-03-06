@@ -34,18 +34,15 @@ Page({
     that.setData({
       inputVal: e.detail.value
     });
-    console.log(that.data.inputVal)
     wx.request({
       url: config.api.getAgentFilterList,
       data: { condition: that.data.inputVal },
       success: function (res) {
         if (res.data.success) {
-          console.log(res.data.data)
           that.setData({ agentList: res.data.data })
         }
       }
     })
-
   },
 
   //选择代理人
