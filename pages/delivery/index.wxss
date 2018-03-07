@@ -6,7 +6,7 @@ white-space: nowrap;
 
 .sendbox{
     border:1rpx solid #e0e0e0;
-    margin: 30rpx 30rpx 0 30rpx;
+    margin-bottom: 20rpx;
     background-color: #fff;
 }
 
@@ -32,13 +32,13 @@ white-space: nowrap;
 }
 
 .sendbox .row .city{
-    width: 90rpx;
+    width: 120rpx;
     overflow: hidden;
     margin-right: 20rpx;
 }
 
 .sendbox .row .address{
-    width: 330rpx;
+    width: 320rpx;
     text-align: right
 }
 

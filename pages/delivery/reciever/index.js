@@ -1,4 +1,5 @@
-// pages/delivery/reciever/index.js
+import utils from '../../../utils/util'
+
 const regexSpecial = /^(北京市|天津市|重庆市|上海市|香港特别行政区|澳门特别行政区)/;
 const regexProvince = /^(.*?(省|自治区))(.*?)$/;
 const regex = /^(.*?[市]|.*?地区|.*?特别行政区)(.*?[市区县])(.*?)$/g;
@@ -18,7 +19,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    addressLine: '江苏省 苏州市 工业园区',
+    errorMsg: '',
     reciever: reciever
   },
 
@@ -55,7 +56,6 @@ Page({
           regexReciever(res.address, reciever);
         }
         that.setData({ reciever: reciever });
-        that.setData({ addressLine: reciever.province + " " + reciever.city + " " + reciever.region });
       }
     })
   },
@@ -68,8 +68,7 @@ Page({
     reciever.city = e.detail.value[1];
     reciever.region = e.detail.value[2];
     this.setData({
-      reciever: reciever,
-      addressLine: reciever.province + " " + reciever.city + " " + reciever.region
+      reciever: reciever
     });
   },
 
@@ -77,6 +76,19 @@ Page({
    * 添加寄件人
    */
   addReciever: function (e) {
+    if (!this.data.reciever.name) {
+      utils.popError(this, '请填写收件人');
+      return;
+    }
+    if (!this.data.reciever.mobile) {
+      utils.popError(this, '请填写收件人联系方式');
+      return;
+    }
+    if (!this.data.reciever.address || !this.data.sender.province || !this.data.sender.city || !this.data.sender.region) {
+      utils.popError(this, '请填写收件地址');
+      return;
+    }
+
     var pages = getCurrentPages();
     pages[pages.length - 2].setData({ reciever: this.data.reciever });
     wx.navigateBack();

@@ -1,3 +1,4 @@
+<view class="pop-error" wx:if="{{errorMsg}}">{{errorMsg}}</view>
 <view class="weui-cells weui-cells_after-title">
   <view class="weui-cell weui-cell_input">
     <view class="weui-cell__hd">
@@ -30,12 +31,12 @@
     <view class="weui-cell__bd">
       <picker mode="region" bindchange="bindRegionChange">
         <view class="picker">
-          <view class="weui-input">{{addressLine}}</view>
+          <view class="weui-input">{{sender.province}} {{sender.city}} {{sender.region}}</view>
         </view>
       </picker>
     </view>
     <view class="weui-cell__ft">
-      <image src="/images/location.png" class="location" bindtap="bingAddressTap" />
+      <image src="/images/location.png" mode="aspectFit" class="location" bindtap="bingAddressTap" />
     </view>
   </view>
   <view class="weui-cell weui-cell_input">

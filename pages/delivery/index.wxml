@@ -15,6 +15,19 @@
     <i class="weui-cell__ft weui-cell__ft_in-access"></i>
   </view>
 </view>
+
+<view class="weui-cells weui-cells_after-title">
+  <radio-group bindchange="expressChange">
+    <label class="weui-cell weui-check__label" wx:for="{{expresses}}" wx:key="value">
+      <radio class="weui-check" value="{{item.value}}" checked="{{item.checked}}" />
+      <view class="weui-cell__bd">{{item.name}}</view>
+      <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{item.checked}}">
+        <icon class="weui-icon-radio" type="success_no_circle" size="16"></icon>
+      </view>
+    </label>
+  </radio-group>
+</view>
+
 <view class='weui-btn-area'>
-  <button class="weui-btn" type="primary">添加货物</button>
+  <button class="weui-btn" type="primary">下单</button>
 </view>

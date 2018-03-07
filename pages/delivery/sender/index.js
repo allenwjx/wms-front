@@ -1,4 +1,6 @@
-// pages/delivery/sender/index.js
+import utils from '../../../utils/util'
+
+let app = getApp();
 const regexSpecial = /^(北京市|天津市|重庆市|上海市|香港特别行政区|澳门特别行政区)/;
 const regexProvince = /^(.*?(省|自治区))(.*?)$/;
 const regex = /^(.*?[市]|.*?地区|.*?特别行政区)(.*?[市区县])(.*?)$/g;
@@ -18,7 +20,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    addressLine: '江苏省 苏州市 工业园区',
+    errorMsg: '',
     sender: sender
   },
 
@@ -37,7 +39,6 @@ Page({
     wx.chooseLocation({
       success: function (res) {
         var addressArray = [];
-        
 
         function regexSender(address, sender) {
           var _addressArray = regex.exec(address);
@@ -56,7 +57,6 @@ Page({
           regexSender(res.address, sender);
         }
         that.setData({ sender: sender });
-        that.setData({ addressLine: sender.province + " " + sender.city + " " + sender.region });
       }
     })
   },
@@ -69,8 +69,7 @@ Page({
     sender.city = e.detail.value[1];
     sender.region = e.detail.value[2];
     this.setData({
-      sender: sender,
-      addressLine: sender.province + " " + sender.city + " " + sender.region
+      sender: sender
     });
   },
 
@@ -78,6 +77,18 @@ Page({
    * 添加寄件人
    */
   addSender: function (e) {
+    if (!this.data.sender.name) {
+      utils.popError(this, '请填写寄件人');
+      return;
+    }
+    if (!this.data.sender.mobile) {
+      utils.popError(this, '请填写寄件人联系方式');
+      return;
+    }
+    if (!this.data.sender.address || !this.data.sender.province || !this.data.sender.city || !this.data.sender.region) {
+      utils.popError(this, '请填写发货地址');
+      return;
+    }
     var pages = getCurrentPages();
     pages[pages.length - 2].setData({ sender: this.data.sender });
     wx.navigateBack();
