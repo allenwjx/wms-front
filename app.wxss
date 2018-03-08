@@ -7,66 +7,44 @@ page {
   background-color: #f8f8f8;
 }
 
-/* 
-.container, .page {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-sizing: border-box;
-} */
-
-.tabbar {
-  display: flex;
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  height: 100rpx;
-  line-height: 100rpx;
-  width: 100%;
-  background-color: #f7f7f7;
-  border-top: 1rpx solid #e0e0e0;
-}
-
-.tabbar navigator {
-  display: inline-flex;
-  flex: 1;
-  justify-content: center;
-  font-size: 30rpx;
-  color: #666;
-  border-right: 1rpx solid #e0e0e0;
-}
-
-.tabbar navigator:last-child {
-  border-right: 0 none;
-}
-
 .icon-txt {
   border-radius: 50%;
   width: 50rpx;
   height: 50rpx;
   line-height: 50rpx;
   text-align: center;
-  color: #fff;
   font-size: 30rpx;
+  margin: 0 15rpx 0 0;
 }
 
 .icon-txt-black {
-  background-color: #000;
+  color: #000;
+  border: 1rpx solid #000;
 }
 
 .icon-txt-blue {
-  background-color: #0ae;
+  color: #0ae;
+  border: 1rpx solid #0ae;
 }
 
 .icon-txt-red {
-  background-color: #f00;
+  color: #f00;
+  border: 1rpx solid #f00;
 }
 
 .icon-txt-green {
-  background-color: #6c0;
+  color: #6c0;
+  border: 1rpx solid #6c0;
 }
 
 .icon-txt-oragne {
-  background-color: #ff8000;
+  color: #ff8000;
+  border: 1rpx solid #ff8000;
+}
+
+.new-preview__value {
+overflow: hidden;
+word-break: normal;
+word-wrap: break-word;
+font-size: .9em;
 }

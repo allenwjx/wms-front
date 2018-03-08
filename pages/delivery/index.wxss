@@ -1,48 +1,21 @@
+@import '/style/zeh.wxss';
+
 text{
 overflow: hidden;
 text-overflow: ellipsis;
 white-space: nowrap;
 }
 
-.sendbox{
-    border:1rpx solid #e0e0e0;
-    margin-bottom: 20rpx;
-    background-color: #fff;
-}
-
-.sendbox .row{
-    display: flex;
-    height: 80rpx;
-    line-height: 80rpx;
-    font-size: 30rpx;
-    border-bottom: 1rpx solid #e0e0e0;
-}
-
-.sendbox .row:last-child{
-    border-bottom: 0 none;
-} 
-
-.sendbox .row .icon-txt{
-    margin: 15rpx 15rpx 0 15rpx;
-}
-
-.sendbox .row .name{
-    width: 120rpx;
-    margin-right: 20rpx;
-}
-
-.sendbox .row .city{
-    width: 120rpx;
-    overflow: hidden;
-    margin-right: 20rpx;
-}
-
-.sendbox .row .address{
-    width: 320rpx;
-    text-align: right
-}
-
-.sendbox .row navigator{
-    padding-left: 20rpx;
-    border-left: 1rpx solid #ccc;
+.bottom-commodity {
+  background: #E64340;
+  color: #fff;
+  height: 70rpx;
+  line-height: 70rpx;
+  font-size: 30rpx;
+  text-align: center;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 3;
+  position:fixed;   
 }

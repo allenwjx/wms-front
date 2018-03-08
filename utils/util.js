@@ -62,9 +62,53 @@ const popError = (obj, msg) => {
   }, 3000);
 }
 
+const showModal = (obj) => {
+  // 显示遮罩层
+  var animation = wx.createAnimation({
+    duration: 200,
+    timingFunction: "linear",
+    delay: 0
+  })
+  obj.animation = animation
+  animation.translateY(300).step()
+  obj.setData({
+    animationData: animation.export(),
+    showModalStatus: true
+  })
+  setTimeout(function () {
+    animation.translateY(0).step()
+    obj.setData({
+      animationData: animation.export()
+    })
+  }.bind(obj), 200)
+}
+
+const hideModal = (obj) => {
+  // 隐藏遮罩层
+  var animation = wx.createAnimation({
+    duration: 200,
+    timingFunction: "linear",
+    delay: 0
+  })
+  obj.animation = animation
+  animation.translateY(300).step()
+  obj.setData({
+    animationData: animation.export(),
+  })
+  setTimeout(function () {
+    animation.translateY(0).step()
+    obj.setData({
+      animationData: animation.export(),
+      showModalStatus: false
+    })
+  }.bind(obj), 200)
+}
+
 module.exports = {
   formatTime: formatTime,
   formatDate: formatDate,
   getUrlParam: getUrlParam,
-  popError: popError
+  popError: popError,
+  showModal: showModal,
+  hideModal: hideModal
 }

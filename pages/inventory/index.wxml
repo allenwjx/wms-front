@@ -1,2 +1,21 @@
-<!--pages/inventory/index.wxml-->
-<text>pages/inventory/index.wxml</text>
+<view class="page">
+  <view class="page__hd">
+    <view class="page__title">Panel</view>
+    <view class="page__desc">面板</view>
+  </view>
+  <view class="page__bd">
+    <view class="weui-panel weui-panel_access" wx:for="{{datas}}" wx:key="*this">
+      <view class="weui-panel__hd">{{item.a}}</view>
+      <view class="weui-panel__bd">
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">{{item.b}}</view>
+          <view class="weui-media-box__desc">{{item.c}}</view>
+        </view>
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">{{item.d}}</view>
+          <view class="weui-media-box__desc">{{item.e}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
