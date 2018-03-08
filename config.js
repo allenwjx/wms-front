@@ -14,7 +14,10 @@ var config = {
     getAgentList: `${base}/agent/list`,
     getAgentFilterList: `${base}/agent/filterList`,
     getManufacturerList: `${base}/manufacturer/list`,
-    options: `${base}/opt/enum`
+    options: `${base}/opt/enum`,
+    address: `${base}/address`,
+    defaultAddress: `${base}/address/default`,
+    addressList: `${base}/list`
   }
 };
 

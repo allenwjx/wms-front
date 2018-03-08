@@ -100,7 +100,9 @@ Page({
    * 跳转到寄件人列表页
    */
   navigateToSenders: function (event) {
-    // TODO 跳转到寄件人列表页
+    wx.navigateTo({
+      url: '/pages/personal/addr/mine'
+    });
   },
 
   /**

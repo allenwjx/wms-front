@@ -77,6 +77,7 @@ Page({
    * 添加寄件人
    */
   addSender: function (e) {
+    var _this = this;
     if (!this.data.sender.name) {
       utils.popError(this, '请填写寄件人');
       return;
@@ -89,9 +90,32 @@ Page({
       utils.popError(this, '请填写发货地址');
       return;
     }
-    var pages = getCurrentPages();
-    pages[pages.length - 2].setData({ sender: this.data.sender });
-    wx.navigateBack();
+
+    // 添加新寄件人
+    wx.request({
+      url: config.api.address,
+      method: "POST",
+      data: {
+        name: this.data.sender.name,
+        tel: this.data.sender.mobile,
+        province: this.data.sender.province,
+        city: this.data.sender.city,
+        region: this.data.sender.region,
+        detail: this.data.sender.address,
+        addressType: 'SENDER',
+        defaultSetting: false
+      },
+      success: function (response) {
+        var pages = getCurrentPages();
+        pages[pages.length - 2].setData({ sender: _this.data.sender });
+        wx.navigateBack();
+      },
+      fail: function (e) {
+        var pages = getCurrentPages();
+        pages[pages.length - 2].setData({ sender: _this.data.sender });
+        wx.navigateBack();
+      }
+    });
   },
 
   bindNameInput: function (e) {

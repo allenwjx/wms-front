@@ -1,0 +1,45 @@
+<view class="page">
+  <view class="page__bd">
+    <!-- 寄件人面板 -->
+    <view class="weui-panel" wx:for="{{addresses}}" wx:key="*this">
+      <view class="weui-panel__bd">
+        <view class="weui-media-box weui-media-box_small-appmsg">
+          <view class="weui-cells weui-cells_in-small-appmsg" style='font-size: 30rpx'>
+            <!-- 地址编辑 -->
+            <view class="weui-cell">
+              <view class="weui-cell__bd" style='text-align: left'>
+                <view class='default-addr' wx:if="{{item.defaultSetting}}">默认地址</view>
+                <view wx:if="{{!item.defaultSetting}}">设为地址</view>
+              </view>
+              <view class="weui-cell__bd" style='text-align: right'>
+                <image src="/images/editor.png" class="min-image" />
+              </view>
+            </view>
+            <!-- /地址编辑 -->
+
+            <!-- 我的地址详情 -->
+            <view class="weui-form-preview">
+              <view class="weui-form-preview__bd">
+                <view class="weui-form-preview__item">
+                  <view class="weui-form-preview__label">{{item.name}}</view>
+                  <view class="new-preview__value">{{item.mobile}}</view>
+                </view>
+                <view class="weui-form-preview__item">
+                  <view class="weui-form-preview__label">{{item.province}} {{item.city}} {{item.region}}</view>
+                  <view class="new-preview__value" style='color: #ff8000; font-size: 1em;' wx:if="{{item.defaultSetting}}">默认地址</view>
+                  <view class="new-preview__value" style='color: #ff8000; font-size: 1em;' wx:if="{{!item.defaultSetting}}">设为地址</view>
+                </view>
+                <view class="weui-form-preview__item">
+                  <view class="weui-form-preview__label">{{item.address}}</view>
+                </view>
+              </view>
+            </view>
+            <!-- /我的地址详情 -->
+
+
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
