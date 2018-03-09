@@ -1,4 +1,5 @@
 import utils from '../../../utils/util'
+import config from '../../../config'
 
 let app = getApp();
 const regexSpecial = /^(北京市|天津市|重庆市|上海市|香港特别行政区|澳门特别行政区)/;

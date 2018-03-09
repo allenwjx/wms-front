@@ -1,5 +1,5 @@
 .pop-error {
-  background: #E64340;
+  background: #e64340;
   color: #fff;
   height: 70rpx;
   line-height: 70rpx;
@@ -9,22 +9,31 @@
   top: 0;
   width: 100%;
   z-index: 3;
-  position:fixed;   
+  position: fixed;
 }
 
-.location{
-    background-color: #fff;
-    width: 24px;
-    height: 24px; 
-    vertical-align: middle;
+.new-form-label {
+  margin-right: 1em;
+  min-width: 4em;
+  text-align: justify;
+  text-align-last: justify;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 
-.min-image{
-    background-color: #fff;
-    width: 16px;
-    height: 16px; 
-    vertical-align: middle;
-    margin-right: 8px;
+.location {
+  background-color: #fff;
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+}
+
+.min-image {
+  background-color: #fff;
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  margin-right: 8px;
 }
 
 .zhezhao_screen {
