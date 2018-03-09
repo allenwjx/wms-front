@@ -36,7 +36,14 @@
                 </view>
                 <view class="weui-form-preview__item">
                   <view class="weui-form-preview__label">{{item.province}} {{item.city}} {{item.region}}</view>
-                  <view wx:if="{{!edit}}" class="new-preview__value" bindtap='selectAddress' data-id='{{item.id}}' style='color: #ff8000; font-size: 1em;'>选择</view>
+                  <view wx:if="{{!edit}}" class="new-preview__value" bindtap='selectAddress' data-id='{{item.id}}' style='color: #ff8000; font-size: 1em;'>
+                    <view wx:if="{{selectedAddrId != item.id}}">
+                      <image src="/images/addition.png" class="middle-image" />
+                    </view>
+                    <view wx:else>
+                      <image src="/images/success.png" class="middle-image" />
+                    </view>
+                  </view>
                 </view>
                 <view class="weui-form-preview__item">
                   <view class="weui-form-preview__label">{{item.address}}</view>

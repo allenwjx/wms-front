@@ -118,8 +118,37 @@
     <!-- /货物面板 -->
 
     <!-- 快递公司面板 -->
-
+    <view class="weui-panel">
+      <view class="weui-panel__bd">
+        <view class="weui-media-box weui-media-box_small-appmsg">
+          <view class="weui-cells weui-cells_in-small-appmsg" style='font-size: 30rpx'>
+            <view class="weui-cell">
+              <view class="weui-cell__hd" style='display: flex; font-size: 30rpx'>
+                <image src="/images/express.png" class="min-image" />
+              </view>
+              <view class="weui-cell__bd">
+                <text>物流公司</text>
+              </view>
+            </view>
+            <radio-group bindchange="expressChange">
+              <label class="weui-cell weui-check__label" wx:for="{{expresses}}" wx:key="value">
+                <radio class="weui-check" value="{{item.value}}" checked="{{item.checked}}" />
+                <view class="weui-cell__bd">{{item.name}}</view>
+                <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{item.checked}}">
+                  <icon class="weui-icon-radio" type="success_no_circle" size="16"></icon>
+                </view>
+              </label>
+            </radio-group>
+          </view>
+        </view>
+      </view>
+    </view>
     <!-- /快递公司面板 -->
+
+    <!-- 提交按钮 -->
+    <view class='weui-btn-area'>
+      <button class="weui-btn" type="primary" bindtap='book'>提交</button>
+    </view>
   </view>
 </view>
 
@@ -156,17 +185,3 @@
 </view>
 <!-- 遮罩 -->
 <view class="zhezhao_screen" bindtap="hideModal" wx:if="{{showModalStatus}}"></view>
-<!-- <view class="weui-cells weui-cells_after-title">
-  <radio-group bindchange="expressChange">
-    <label class="weui-cell weui-check__label" wx:for="{{expresses}}" wx:key="value">
-      <radio class="weui-check" value="{{item.value}}" checked="{{item.checked}}" />
-      <view class="weui-cell__bd">{{item.name}}</view>
-      <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{item.checked}}">
-        <icon class="weui-icon-radio" type="success_no_circle" size="16"></icon>
-      </view>
-    </label>
-  </radio-group>
-</view>
-<view class='weui-btn-area'>
-  <button class="weui-btn" type="primary" bindtap='book'>提交</button>
-</view> -->

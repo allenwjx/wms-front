@@ -8,6 +8,7 @@ const regexProvince = /^(.*?(省|自治区))(.*?)$/;
 const regex = /^(.*?[市]|.*?地区|.*?特别行政区)(.*?[市区县])(.*?)$/g;
 
 let sender = {
+  id: 0,
   name: '',
   mobile: '',
   company: '',
@@ -18,6 +19,7 @@ let sender = {
 };
 
 let reciever = {
+  id: 0,
   name: '',
   mobile: '',
   company: '',
@@ -38,8 +40,8 @@ Page({
     animationData: null,
     expresses: [],
     express: '',
-    sender: null,
-    reciever: null,
+    sender: sender,
+    reciever: reciever,
     errorMsg: ''
   },
 
@@ -66,6 +68,7 @@ Page({
           let defaultAddr = response.data.data;
           _this.setData({
             sender: {
+              id: defaultAddr.id,
               name: defaultAddr.name,
               mobile: defaultAddr.tel,
               company: defaultAddr.company,
@@ -111,7 +114,7 @@ Page({
    */
   navigateToSenders: function (event) {
     wx.navigateTo({
-      url: '/pages/personal/addr/index?type=SENDER&edit=false'
+      url: '/pages/personal/addr/index?type=SENDER&edit=false&id=' + this.data.sender.id
     });
   },
 
@@ -202,6 +205,11 @@ Page({
     }
     console.log(this.data.express);
     console.log(this.data.reciever);
+
+    // 跳转至订单明细确认页
+    wx.navigateTo({
+      url: './details/index'
+    });
   },
 
   /**

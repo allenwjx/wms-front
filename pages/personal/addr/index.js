@@ -6,6 +6,7 @@ Page({
    */
   data: {
     edit: true,
+    selectedAddrId: 0,
     addressType: '',
     addresses: []
   },
@@ -32,6 +33,10 @@ Page({
 
     this.setData({
       addressType: options.type
+    });
+
+    this.setData({
+      selectedAddrId: options.id
     });
   },
 
