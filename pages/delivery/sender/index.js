@@ -103,6 +103,7 @@ Page({
         city: this.data.sender.city,
         region: this.data.sender.region,
         detail: this.data.sender.address,
+        company: this.data.sender.company,
         addressType: 'SENDER',
         defaultSetting: false
       },

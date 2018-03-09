@@ -9,8 +9,8 @@
     "pages/personal/check/index",
     "pages/personal/bind/index",
     "pages/personal/bind/agent/index",
-    "pages/personal/addr/reciever",
-    "pages/personal/addr/mine",
+    "pages/personal/addr/index",
+    "pages/personal/addr/edit",
     "pages/message/success",
     "pages/message/fail"
   ],

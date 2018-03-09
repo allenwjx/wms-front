@@ -47,7 +47,6 @@ Page({
 
   //选择代理人
   chooseAgent: function (e) {
-    //获取当前页面
     var $data = e.currentTarget.dataset;
     var pages = getCurrentPages();
     pages[pages.length - 2].setData({ agent: $data.item });

@@ -1,23 +1,33 @@
-<view class="page">
+<view class='page-center' wx:if="{{!addresses || addresses.length == 0}}">
+  <image src="/images/baoguo.png" style="width: 48px;height: 48px;" /> 您还没有添加
+  <view wx:if="{{addressType == 'SENDER'}}">发件人</view>
+  <view wx:else>收件人</view>
+  信息
+</view>
+<view class='normal-bottom' wx:if="{{!addresses || addresses.length == 0}}" bindtap='createAddress'>
+  <view wx:if="{{addressType == 'SENDER'}}">新建发件人</view>
+  <view wx:else>新建收件人</view>
+</view>
+
+<view class="page" wx:else>
   <view class="page__bd">
-    <!-- 寄件人面板 -->
+    <!-- 地址列表面板 -->
     <view class="weui-panel" wx:for="{{addresses}}" wx:key="*this">
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_small-appmsg">
           <view class="weui-cells weui-cells_in-small-appmsg" style='font-size: 30rpx'>
             <!-- 地址编辑 -->
-            <view class="weui-cell">
+            <view class="weui-cell" wx:if="{{edit}}">
               <view class="weui-cell__bd" style='text-align: left'>
                 <view class='default-addr' wx:if="{{item.defaultSetting}}">默认地址</view>
-                <view wx:if="{{!item.defaultSetting}}">设为地址</view>
+                <view wx:if="{{!item.defaultSetting}}" bindtap='setDefaultAddress' data-id='{{item.id}}'>设为默认</view>
               </view>
-              <view class="weui-cell__bd" style='text-align: right'>
+              <view class="weui-cell__bd" style='text-align: right' bindtap='editAddress' data-id='{{item.id}}'>
                 <image src="/images/editor.png" class="min-image" />
               </view>
             </view>
             <!-- /地址编辑 -->
-
-            <!-- 我的地址详情 -->
+            <!-- 地址详情 -->
             <view class="weui-form-preview">
               <view class="weui-form-preview__bd">
                 <view class="weui-form-preview__item">
@@ -26,17 +36,14 @@
                 </view>
                 <view class="weui-form-preview__item">
                   <view class="weui-form-preview__label">{{item.province}} {{item.city}} {{item.region}}</view>
-                  <view class="new-preview__value" style='color: #ff8000; font-size: 1em;' wx:if="{{item.defaultSetting}}">默认地址</view>
-                  <view class="new-preview__value" style='color: #ff8000; font-size: 1em;' wx:if="{{!item.defaultSetting}}">设为地址</view>
+                  <view wx:if="{{!edit}}" class="new-preview__value" bindtap='selectAddress' data-id='{{item.id}}' style='color: #ff8000; font-size: 1em;'>选择</view>
                 </view>
                 <view class="weui-form-preview__item">
                   <view class="weui-form-preview__label">{{item.address}}</view>
                 </view>
               </view>
             </view>
-            <!-- /我的地址详情 -->
-
-
+            <!-- /地址详情 -->
           </view>
         </view>
       </view>

@@ -54,7 +54,7 @@ App({
   wxValidate: (rules, messages) => new wxValidate(rules, messages),
 
   onShow: function (options) {
-    console.log('App On Show:', options)
+    
   },
 
   onHide: function () {

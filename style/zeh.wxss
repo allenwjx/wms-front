@@ -12,6 +12,30 @@
   position: fixed;
 }
 
+.normal-bottom {
+  background: #e64340;
+  color: #fff;
+  height: 70rpx;
+  line-height: 70rpx;
+  font-size: 30rpx;
+  text-align: center;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 3;
+  position: fixed;
+}
+
+.page-center {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #888888;
+  font-size: 30rpx;
+}
+
 .new-form-label {
   margin-right: 1em;
   min-width: 4em;

@@ -1,6 +1,7 @@
 import config from '../../config'
 import utils from '../../utils/util'
 import resource from '../../utils/resource'
+import { Express } from '../../api/express.js'
 
 const regexSpecial = /^(北京市|天津市|重庆市|上海市|香港特别行政区|澳门特别行政区)/;
 const regexProvince = /^(.*?(省|自治区))(.*?)$/;
@@ -27,7 +28,6 @@ let reciever = {
 };
 
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -47,34 +47,51 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var _this = this;
     wx.setNavigationBarTitle({ title: '寄快递' });
+    // 加载默认寄件人地址
+    this.retrieveDefaultSenderAddress();
+    // 加载快递公司列表
+    this.listExpresses();
+  },
 
-    // 获取默认发件人
-    this.setData({
-      sender: {
-        name: '王俊翔',
-        mobile: '18662586251',
-        company: '同程旅游',
-        province: '江苏省',
-        city: '苏州市',
-        region: '工业园区',
-        address: '中海国际社区六区15幢703室'
-      }
-    });
-
-    // 获取快递公司
+  /**
+   * 获取默认寄件人地址
+   */
+  retrieveDefaultSenderAddress: function () {
+    let _this = this;
     wx.request({
-      url: config.api.options + '/ExpressTypeEnum',
+      url: config.api.defaultAddress + '/SENDER',
       success: function (response) {
         if (response.data.success) {
-          let expresses = response.data.data;
-          _this.setData({ expresses: expresses });
-          for (let i = 0, len = expresses.length; i < len; ++i) {
-            if (expresses[i].checked) {
-              _this.setData({ express: expresses[i] });
+          let defaultAddr = response.data.data;
+          _this.setData({
+            sender: {
+              name: defaultAddr.name,
+              mobile: defaultAddr.tel,
+              company: defaultAddr.company,
+              province: defaultAddr.province,
+              city: defaultAddr.city,
+              region: defaultAddr.region,
+              address: defaultAddr.detail
             }
-          }
+          });
+        }
+      }
+    });
+  },
+
+  /**
+   * 获取快递公司信息
+   */
+  listExpresses: function () {
+    var _this = this;
+    let express = new Express();
+    let promise = express.listExpresses();
+    promise.then(function (expresses) {
+      _this.setData({ expresses: expresses });
+      for (let i = 0, len = expresses.length; i < len; ++i) {
+        if (expresses[i].checked) {
+          _this.setData({ express: expresses[i] });
         }
       }
     });
@@ -84,16 +101,9 @@ Page({
    * 跳转到添加寄件人列表
    */
   navigateToSender: function (event) {
-    let posterType = event.currentTarget.dataset.type;
-    if (posterType == 1) {
-      wx.navigateTo({
-        url: './sender/index'
-      });
-    } else {
-      wx.navigateTo({
-        url: './reciever/index'
-      });
-    }
+    wx.navigateTo({
+      url: './sender/index'
+    });
   },
 
   /**
@@ -101,7 +111,7 @@ Page({
    */
   navigateToSenders: function (event) {
     wx.navigateTo({
-      url: '/pages/personal/addr/mine'
+      url: '/pages/personal/addr/index?type=SENDER&edit=false'
     });
   },
 
@@ -194,6 +204,20 @@ Page({
     console.log(this.data.reciever);
   },
 
+  /**
+   * 呈现商品类型页面
+   */
+  showModal: function () {
+    utils.showModal(this);
+  },
+
+  /**
+   * 隐藏商品类型页面
+   */
+  hideModal: function () {
+    utils.hideModal(this);
+  },
+
   bindNameInput: function (e) {
     reciever.name = e.detail.value;
     this.setData({
@@ -269,13 +293,5 @@ Page({
    */
   onShareAppMessage: function () {
 
-  },
-
-  showModal: function () {
-    utils.showModal(this);
-  },
-
-  hideModal: function () {
-    utils.hideModal(this);
   }
 })

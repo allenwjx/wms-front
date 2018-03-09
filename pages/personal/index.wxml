@@ -8,11 +8,11 @@
   </view>
 
   <view class="page__bd">
-    <view class="weui-panel" style='margin-top: 10px; font-size: 30rpx;'>
+    <view class="weui-panel" style='margin-top: 10px;'>
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_small-appmsg">
           <view class="weui-cells weui-cells_in-small-appmsg">
-            <navigator url="/pages/personal/order/index" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <navigator url="/pages/personal/addr/index?type=RECEIVER&edit=true" class="weui-cell weui-cell_access" hover-class="weui-cell_active" style='font-size: 30rpx;'>
               <view class="weui-cell__hd">
                 <image src="{{orderIcon}}" style="width: 32px;height: 32px;margin-right: 5px" />
               </view>
@@ -21,7 +21,7 @@
               </view>
               <view class="weui-cell__ft weui-cell__ft_in-access"></view>
             </navigator>
-            <navigator url="/pages/personal/order/index" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <navigator url="/pages/personal/addr/index?type=SENDER&edit=true" class="weui-cell weui-cell_access" hover-class="weui-cell_active" style='font-size: 30rpx;'>
               <view class="weui-cell__hd">
                 <image src="{{orderIcon}}" style="width: 32px;height: 32px;margin-right: 5px" />
               </view>
@@ -37,11 +37,11 @@
   </view>
 
   <view class="page__bd">
-    <view class="weui-panel" style='margin-top: 10px; font-size: 30rpx;'>
+    <view class="weui-panel" style='margin-top: 10px;'>
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_small-appmsg">
           <view class="weui-cells weui-cells_in-small-appmsg">
-            <navigator url="/pages/personal/order/index" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <navigator url="/pages/personal/order/index" class="weui-cell weui-cell_access" hover-class="weui-cell_active" style='font-size: 30rpx;'>
               <view class="weui-cell__hd">
                 <image src="{{orderIcon}}" style="width: 32px;height: 32px;margin-right: 5px" />
               </view>
@@ -51,7 +51,7 @@
               <view class="weui-cell__ft weui-cell__ft_in-access"></view>
             </navigator>
             <!-- TODO: 货物验真只有代理人身份才能使用 -->
-            <navigator bindtap='doScan' url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <navigator bindtap='doScan' url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" style='font-size: 30rpx;'>
               <view class="weui-cell__hd">
                 <image src="{{checkIcon}}" style="width: 32px;height: 32px;margin-right: 5px" />
               </view>
@@ -61,7 +61,7 @@
               <view class="weui-cell__ft weui-cell__ft_in-access"></view>
             </navigator>
             <!-- TODO: 货物绑定只有管理员身份才能使用 -->
-            <navigator url="/pages/personal/bind/index" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <navigator url="/pages/personal/bind/index" class="weui-cell weui-cell_access" hover-class="weui-cell_active" style='font-size: 30rpx;'>
               <view class="weui-cell__hd">
                 <image src="{{bindIcon}}" style="width: 32px;height: 32px;margin-right: 5px" />
               </view>
@@ -77,11 +77,11 @@
   </view>
 
   <view class="page__bd">
-    <view class="weui-panel" style='margin-top: 10px; font-size: 30rpx;'>
+    <view class="weui-panel" style='margin-top: 10px;'>
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_small-appmsg">
           <view class="weui-cells weui-cells_in-small-appmsg">
-            <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" style='font-size: 30rpx;'>
               <view class="weui-cell__hd">
                 <image src="{{orderIcon}}" style="width: 32px;height: 32px;margin-right: 5px" />
               </view>
@@ -90,7 +90,7 @@
               </view>
               <view class="weui-cell__ft weui-cell__ft_in-access"></view>
             </navigator>
-            <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" style='font-size: 30rpx;'>
               <view class="weui-cell__hd">
                 <image src="{{orderIcon}}" style="width: 32px;height: 32px;margin-right: 5px" />
               </view>
@@ -99,7 +99,7 @@
               </view>
               <view class="weui-cell__ft weui-cell__ft_in-access"></view>
             </navigator>
-            <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+            <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" style='font-size: 30rpx;'>
               <view class="weui-cell__hd">
                 <image src="{{orderIcon}}" style="width: 32px;height: 32px;margin-right: 5px" />
               </view>

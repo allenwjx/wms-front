@@ -1,8 +1,8 @@
 /**
  * 小程序配置文件
  */
-var base = 'http://47.97.222.254:8080/wms/api';
-// var base = 'http://127.0.0.1:8080/wms/api';
+// var base = 'http://47.97.222.254:8080/wms/api';
+var base = 'http://127.0.0.1:8080/wms/api';
 
 var config = {
   // API接口
@@ -17,7 +17,9 @@ var config = {
     options: `${base}/opt/enum`,
     address: `${base}/address`,
     defaultAddress: `${base}/address/default`,
-    addressList: `${base}/list`
+    addressList: `${base}/address/list`,
+    setDefaultAddress: `${base}/address/setDefault`,
+    updateAddress: `${base}/address/update`,
   }
 };
 
