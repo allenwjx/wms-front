@@ -40,6 +40,8 @@ Page({
     animationData: null,
     expresses: [],
     express: '',
+    commodityWeight: 1,
+    remark: '',
     sender: sender,
     reciever: reciever,
     errorMsg: ''
@@ -84,7 +86,7 @@ Page({
   },
 
   /**
-   * 获取快递公司信息
+   * TODO 获取快递公司信息
    */
   listExpresses: function () {
     var _this = this;
@@ -191,6 +193,18 @@ Page({
    * 提交快递申请
    */
   book: function (e) {
+    if (!this.data.sender.name) {
+      utils.popError(this, '请填写寄件人');
+      return;
+    }
+    if (!this.data.sender.mobile) {
+      utils.popError(this, '请填写寄件人联系方式');
+      return;
+    }
+    if (!this.data.sender.address || !this.data.sender.province || !this.data.sender.city || !this.data.sender.region) {
+      utils.popError(this, '请填写寄件地址');
+      return;
+    }
     if (!this.data.reciever.name) {
       utils.popError(this, '请填写收件人');
       return;
@@ -203,12 +217,25 @@ Page({
       utils.popError(this, '请填写收件地址');
       return;
     }
-    console.log(this.data.express);
-    console.log(this.data.reciever);
+    if (!this.data.express) {
+      utils.popError(this, '请选择物流公司');
+    }
+    if (!this.data.commodityWeight) {
+      utils.popError(this, '请填写包裹重量');
+    }
+    let orderInfo = {};
+    orderInfo.sender = this.data.sender;
+    orderInfo.receiver = this.data.reciever;
+    orderInfo.commodity = this.data.commodity;
+    orderInfo.commodityWeight = this.data.commodityWeight;
+    orderInfo.remark = this.data.remark;
+    orderInfo.expressCompany = this.data.express;
+    let str = JSON.stringify(orderInfo);
 
+    // TODO 创建订单
     // 跳转至订单明细确认页
     wx.navigateTo({
-      url: './details/index'
+      url: './details/index?str=' + str
     });
   },
 
@@ -251,6 +278,18 @@ Page({
     reciever.address = e.detail.value;
     this.setData({
       reciever: reciever
+    });
+  },
+
+  bindCommodityWeight: function (e) {
+    this.setData({
+      commodityWeight: e.detail.value
+    });
+  },
+
+  bindRemark: function (e) {
+    this.setData({
+      remark: e.detail.value
     });
   },
 

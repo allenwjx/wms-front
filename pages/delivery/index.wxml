@@ -64,9 +64,9 @@
                 <text>收件信息</text>
               </view>
             </view>
-            <input class="weui-cell" bindinput="bindNameInput" value="{{reciever.name}}" placeholder="收件人姓名" />
-            <input class="weui-cell" bindinput="bindMobileInput" type="number" value="{{reciever.mobile}}" placeholder="手机号/固定号码" />
-            <input class="weui-cell" bindinput="bindCompanyInput" value="{{reciever.company}}" placeholder="收件人公司（选填）" />
+            <input class="weui-cell" style='width: 100%' bindinput="bindNameInput" value="{{reciever.name}}" placeholder="收件人姓名" />
+            <input class="weui-cell" style='width: 100%' bindinput="bindMobileInput" type="number" value="{{reciever.mobile}}" placeholder="手机号/固定号码" />
+            <input class="weui-cell" style='width: 100%' bindinput="bindCompanyInput" value="{{reciever.company}}" placeholder="收件人公司（选填）" />
             <view class="weui-cell">
               <view class="weui-cell__bd">
                 <picker mode="region" bindchange="bindRegionChange">
@@ -79,7 +79,7 @@
                 <image src="/images/location.png" class="location" bindtap="bingAddressTap" />
               </view>
             </view>
-            <input class="weui-cell" bindinput="bindAddressInput" placeholder="详细地址（街道门牌号）" value="{{reciever.address}}" />
+            <input class="weui-cell" style='width: 100%' bindinput="bindAddressInput" placeholder="详细地址（街道门牌号）" value="{{reciever.address}}" />
           </view>
         </view>
       </view>
@@ -102,12 +102,17 @@
               <view class="weui-cell__ft weui-cell__ft_in-access">{{commodity.name}}</view>
             </navigator>
             <!-- /选择货物类型 -->
+            <!-- 包裹重量 -->
+            <view class='weui-cell'>
+              <view class="weui-cell__bd">
+                <input class="weui-cell" style='width: 100%' bindinput="bindCommodityWeight" type="digit" placeholder="填写包裹重量，单位（千克）" />
+              </view>
+            </view>
+            <!-- /包裹重量 -->
             <!-- 包裹备注 -->
             <view class='weui-cell'>
               <view class="weui-cell__bd">
-                <input class="weui-cell" placeholder="填写包裹备注信息" />
-                <!-- <textarea class="weui-textarea" placeholder="填写包裹备注信息" style="height: 3.3em" />
-                <view class="weui-textarea-counter">0/50</view> -->
+                <input class="weui-cell" style='width: 100%' bindinput="bindRemark" placeholder="填写包裹备注信息" />
               </view>
             </view>
             <!-- /包裹备注 -->
