@@ -200,7 +200,6 @@ Page({
       utils.popError(this, '请填写地址');
       return;
     }
-
     // 添加新寄件人
     wx.request({
       url: config.api.address,
@@ -213,7 +212,7 @@ Page({
         region: this.data.address.region,
         detail: this.data.address.address,
         company: this.data.address.company,
-        addressType: _this.data.addressType,
+        addressType: this.data.addressType,
         defaultSetting: false
       },
       success: function (response) {

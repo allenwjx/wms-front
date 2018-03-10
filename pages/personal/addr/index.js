@@ -35,9 +35,12 @@ Page({
       addressType: options.type
     });
 
-    this.setData({
-      selectedAddrId: options.id
-    });
+    if (options.id) {
+      this.setData({
+        selectedAddrId: options.id
+      });
+    }
+
   },
 
   /**
