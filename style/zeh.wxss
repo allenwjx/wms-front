@@ -13,7 +13,7 @@
 }
 
 .normal-bottom {
-  background: #e64340;
+  background: #1AAD19;
   color: #fff;
   height: 100rpx;
   line-height: 100rpx;
@@ -50,22 +50,6 @@
   width: 24px;
   height: 24px;
   vertical-align: middle;
-}
-
-.min-image {
-  background-color: #fff;
-  width: 16px;
-  height: 16px;
-  vertical-align: middle;
-  margin-right: 8px;
-}
-
-.middle-image {
-  background-color: #fff;
-  width: 32px;
-  height: 32px;
-  vertical-align: middle;
-  margin-right: 8px;
 }
 
 .zhezhao_screen {

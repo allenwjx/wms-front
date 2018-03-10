@@ -6,10 +6,10 @@
     <view class="weui-panel" style='margin-top: 10px;'>
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_small-appmsg">
-          <view class="weui-cells weui-cells_in-small-appmsg" style='font-size: 30rpx'>
+          <view class="weui-cells weui-cells_in-small-appmsg">
             <!-- 选择寄件人 -->
             <navigator url="/pages/delivery/sender/index" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-              <view class="weui-cell__hd" style='display: flex; font-size: 30rpx'>
+              <view class="weui-cell__hd" style='display: flex;  '>
                 <image src="/images/send.png" class="min-image" />
               </view>
               <view class="weui-cell__bd">
@@ -19,24 +19,24 @@
             </navigator>
             <!-- /选择寄件人 -->
             <!-- 默认寄件人 -->
-            <view wx:if="{{sender}}">
+            <view wx:if="{{showDefaultAddress == 1}}">
               <view class="weui-form-preview">
                 <view class="weui-form-preview__bd">
                   <view class="weui-form-preview__item">
-                    <view class="weui-form-preview__label">{{sender.name}}</view>
-                    <view class="new-preview__value">{{sender.mobile}}</view>
+                    <view class="weui-form-preview__label" style='color: #353535'>{{sender.name}}</view>
+                    <view class="new-preview__value" style='color: #353535'>{{sender.mobile}}</view>
                   </view>
                   <view class="weui-form-preview__item">
                     <view class="weui-form-preview__label">{{sender.province}} {{sender.city}} {{sender.region}}</view>
-                    <view class="new-preview__value" style='color: #ff8000; font-size: 1em;' bindtap='navigateToSenders'>选择</view>
+                    <view class="new-preview__value" style='color: #ff8000;' bindtap='navigateToSenders'>选择</view>
                   </view>
                   <view class="weui-form-preview__item">
-                    <view class="weui-form-preview__label">{{sender.address}}</view>
+                    <view class="weui-form-preview__label" style='text-align-last: left'>{{sender.address}}</view>
                   </view>
                 </view>
               </view>
             </view>
-            <view wx:else class="weui-cell">
+            <view wx:if="{{showDefaultAddress == 2}}" class="weui-cell">
               <view class="weui-cell__bd">
                 <text>还未设置寄件人信息</text>
               </view>
@@ -55,9 +55,9 @@
     <view class="weui-panel">
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_small-appmsg">
-          <view class="weui-cells weui-cells_in-small-appmsg" style='font-size: 30rpx'>
+          <view class="weui-cells weui-cells_in-small-appmsg">
             <view class="weui-cell weui-cell_access">
-              <view class="weui-cell__hd" style='display: flex; font-size: 30rpx'>
+              <view class="weui-cell__hd" style='display: flex;'>
                 <image src="/images/reciever.png" class="min-image" />
               </view>
               <view class="weui-cell__bd">
@@ -90,10 +90,10 @@
     <view class="weui-panel">
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_small-appmsg">
-          <view class="weui-cells weui-cells_in-small-appmsg" style='font-size: 30rpx'>
+          <view class="weui-cells weui-cells_in-small-appmsg">
             <!-- 选择货物类型 -->
             <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap='showModal'>
-              <view class="weui-cell__hd" style='display: flex; font-size: 30rpx'>
+              <view class="weui-cell__hd" style='display: flex;'>
                 <image src="/images/bags.png" class="min-image" />
               </view>
               <view class="weui-cell__bd">
@@ -104,7 +104,7 @@
             <!-- /选择货物类型 -->
             <!-- 包裹重量 -->
             <view class='weui-cell'>
-              <view class="weui-cell__bd">
+              <view class="weui-cell__bd" style='display: flex'>
                 <input class="weui-cell" style='width: 100%' bindinput="bindCommodityWeight" type="digit" placeholder="填写包裹重量，单位（千克）" />
               </view>
             </view>
@@ -126,9 +126,9 @@
     <view class="weui-panel">
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_small-appmsg">
-          <view class="weui-cells weui-cells_in-small-appmsg" style='font-size: 30rpx'>
+          <view class="weui-cells weui-cells_in-small-appmsg">
             <view class="weui-cell">
-              <view class="weui-cell__hd" style='display: flex; font-size: 30rpx'>
+              <view class="weui-cell__hd" style='display: flex;'>
                 <image src="/images/express.png" class="min-image" />
               </view>
               <view class="weui-cell__bd">
@@ -162,7 +162,7 @@
   <view class="weui-panel">
     <view class="weui-panel__bd">
       <view class="weui-media-box weui-media-box_small-appmsg">
-        <view class="weui-cells weui-cells_in-small-appmsg" style='font-size: 30rpx'>
+        <view class="weui-cells weui-cells_in-small-appmsg">
           <view class="weui-cell weui-cell_access">
             <view class="weui-cell__hd" style='display: flex;'>
               <image src="/images/bags.png" class="min-image" />

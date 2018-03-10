@@ -44,13 +44,6 @@ Page({
   },
 
   /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
@@ -58,38 +51,25 @@ Page({
   },
 
   /**
-   * 生命周期函数--监听页面隐藏
+   * 打开工具面板
    */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  openToolPanel: function (e) {
+    var _this = this;
+    let addrId = e.currentTarget.dataset.id;
+    wx.showActionSheet({
+      itemList: ['编辑', '删除'],
+      success: function (res) {
+        if (!res.cancel) {
+          if (res.tapIndex == 0) {
+            // 编辑
+            _this.editAddress(addrId);
+          } else if (res.tapIndex == 1) {
+            // 删除
+            _this.deleteAddress(addrId);
+          }
+        }
+      }
+    });
   },
 
   /**
@@ -153,13 +133,39 @@ Page({
   },
 
   /**
+   * 删除地址
+   */
+  deleteAddress: function (addrId) {
+    let _this = this;
+    wx.showModal({
+      title: '提示',
+      content: '确定删除？',
+      confirmText: "确定",
+      cancelText: "取消",
+      success: function (res) {
+        if (res.confirm) {
+          wx.request({
+            method: 'DELETE',
+            url: config.api.address + '/' + addrId,
+            success: function (response) {
+              if (response.data.success) {
+                _this.listAddresses();
+              }
+            }
+          });
+        }
+      }
+    });
+
+  },
+
+  /**
    * 编辑地址
    */
-  editAddress: function (e) {
+  editAddress: function (addrId) {
     let _this = this;
-    let id = e.currentTarget.dataset.id;
     wx.navigateTo({
-      url: '/pages/personal/addr/edit?type=' + this.data.addressType + '&id=' + id
+      url: '/pages/personal/addr/edit?type=' + this.data.addressType + '&id=' + addrId
     });
   },
 

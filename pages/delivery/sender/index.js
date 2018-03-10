@@ -5,16 +5,6 @@ let app = getApp();
 const regexSpecial = /^(北京市|天津市|重庆市|上海市|香港特别行政区|澳门特别行政区)/;
 const regexProvince = /^(.*?(省|自治区))(.*?)$/;
 const regex = /^(.*?[市]|.*?地区|.*?特别行政区)(.*?[市区县])(.*?)$/g;
-let sender = {
-  id: 0,
-  name: '',
-  mobile: '',
-  company: '',
-  province: '',
-  city: '',
-  region: '',
-  address: ''
-};
 
 Page({
   
@@ -23,7 +13,7 @@ Page({
    */
   data: {
     errorMsg: '',
-    sender: sender
+    sender: {}
   },
 
   /**
@@ -37,17 +27,17 @@ Page({
    * 省市区
    */
   bingAddressTap: function () {
-    let that = this;
+    let _this = this;
     wx.chooseLocation({
       success: function (res) {
-        var addressArray = [];
+        let addressArray = [];
+        let sender = _this.data.sender;
 
         function regexSender(address, sender) {
           var _addressArray = regex.exec(address);
           sender.region = _addressArray[1];
           sender.city = _addressArray[2];
           sender.address = _addressArray[3] + "(" + res.name + ")";
-          console.log(_addressArray);
         }
 
         if (!(addressArray = regexSpecial.exec(res.address))) {
@@ -58,7 +48,7 @@ Page({
           sender.province = addressArray[1];
           regexSender(res.address, sender);
         }
-        that.setData({ sender: sender });
+        _this.setData({ sender: sender });
       }
     })
   },
@@ -67,6 +57,7 @@ Page({
    * 省市区选择器级联
    */
   bindRegionChange: function (e) {
+    let sender = this.data.sender;
     sender.province = e.detail.value[0];
     sender.city = e.detail.value[1];
     sender.region = e.detail.value[2];
@@ -122,6 +113,7 @@ Page({
   },
 
   bindNameInput: function (e) {
+    let sender = this.data.sender;
     sender.name = e.detail.value;
     this.setData({
       sender: sender
@@ -129,6 +121,7 @@ Page({
   },
 
   bindMobileInput: function (e) {
+    let sender = this.data.sender;
     sender.mobile = e.detail.value;
     this.setData({
       sender: sender
@@ -136,6 +129,7 @@ Page({
   },
 
   bindCompanyInput: function (e) {
+    let sender = this.data.sender;
     sender.company = e.detail.value;
     this.setData({
       sender: sender
@@ -143,6 +137,7 @@ Page({
   },
 
   bindAddressInput: function (e) {
+    let sender = this.data.sender;
     sender.address = e.detail.value;
     this.setData({
       sender: sender

@@ -7,28 +7,6 @@ const regexSpecial = /^(北京市|天津市|重庆市|上海市|香港特别行�
 const regexProvince = /^(.*?(省|自治区))(.*?)$/;
 const regex = /^(.*?[市]|.*?地区|.*?特别行政区)(.*?[市区县])(.*?)$/g;
 
-let sender = {
-  id: 0,
-  name: '',
-  mobile: '',
-  company: '',
-  province: '',
-  city: '',
-  region: '',
-  address: ''
-};
-
-let reciever = {
-  id: 0,
-  name: '',
-  mobile: '',
-  company: '',
-  province: '',
-  city: '',
-  region: '',
-  address: ''
-};
-
 Page({
   /**
    * 页面的初始数据
@@ -39,11 +17,12 @@ Page({
     showModalStatus: false,
     animationData: null,
     expresses: [],
-    express: '',
-    commodityWeight: 1,
+    express: {},
+    commodityWeight: 0,
     remark: '',
-    sender: sender,
-    reciever: reciever,
+    sender: {},
+    reciever: {},
+    showDefaultAddress: 0,
     errorMsg: ''
   },
 
@@ -67,18 +46,11 @@ Page({
       url: config.api.defaultAddress + '/SENDER',
       success: function (response) {
         if (response.data.success) {
-          let defaultAddr = response.data.data;
+          let addressJson = response.data.data;
+          let sender = _this.buildAddress(addressJson);
           _this.setData({
-            sender: {
-              id: defaultAddr.id,
-              name: defaultAddr.name,
-              mobile: defaultAddr.tel,
-              company: defaultAddr.company,
-              province: defaultAddr.province,
-              city: defaultAddr.city,
-              region: defaultAddr.region,
-              address: defaultAddr.detail
-            }
+            sender: sender,
+            showDefaultAddress: sender.defaultSetting ? 1 : 2
           });
         }
       }
@@ -86,19 +58,66 @@ Page({
   },
 
   /**
-   * TODO 获取快递公司信息
+   * 获取快递公司信息
    */
   listExpresses: function () {
-    var _this = this;
-    let express = new Express();
-    let promise = express.listExpresses();
-    promise.then(function (expresses) {
-      _this.setData({ expresses: expresses });
-      for (let i = 0, len = expresses.length; i < len; ++i) {
-        if (expresses[i].checked) {
-          _this.setData({ express: expresses[i] });
+    let _this = this;
+    wx.request({
+      url: config.api.expressList,
+      success: function (response) {
+        if (response.data.success) {
+          let expresses = _this.buildExpresses(response.data.data);
+          _this.setData({ expresses: expresses });
+          for (let i = 0, len = expresses.length; i < len; ++i) {
+            if (expresses[i].checked) {
+              _this.setData({ express: expresses[i] });
+            }
+          }
         }
       }
+    });
+  },
+
+  /**
+   * 省市区地区选择器
+   */
+  bingAddressTap: function () {
+    let _this = this;
+    wx.chooseLocation({
+      success: function (res) {
+        let addressArray = [];
+        let reciever = _this.data.reciever;
+
+        function regexReciever(address, reciever) {
+          var _addressArray = regex.exec(address);
+          reciever.region = _addressArray[1];
+          reciever.city = _addressArray[2];
+          reciever.address = _addressArray[3] + "(" + res.name + ")";
+        }
+
+        if (!(addressArray = regexSpecial.exec(res.address))) {
+          addressArray = regexProvince.exec(res.address);
+          reciever.province = addressArray[1];
+          regexReciever(addressArray[3], reciever);
+        } else {
+          reciever.province = addressArray[1];
+          regexReciever(res.address, reciever);
+        }
+        _this.setData({ reciever: reciever });
+      }
+    })
+  },
+
+  /**
+   * 省市区选择器级联
+   */
+  bindRegionChange: function (e) {
+    let reciever = this.data.reciever;
+    reciever.province = e.detail.value[0];
+    reciever.city = e.detail.value[1];
+    reciever.region = e.detail.value[2];
+    this.setData({
+      reciever: reciever
     });
   },
 
@@ -115,50 +134,9 @@ Page({
    * 跳转到寄件人列表页
    */
   navigateToSenders: function (event) {
+    let senderId = this.data.sender.id;
     wx.navigateTo({
-      url: '/pages/personal/addr/index?type=SENDER&edit=false&id=' + this.data.sender.id
-    });
-  },
-
-  /**
-   * 省市区地区选择器
-   */
-  bingAddressTap: function () {
-    let that = this;
-    wx.chooseLocation({
-      success: function (res) {
-        var addressArray = [];
-
-        function regexReciever(address, reciever) {
-          var _addressArray = regex.exec(address);
-          reciever.region = _addressArray[1];
-          reciever.city = _addressArray[2];
-          reciever.address = _addressArray[3] + "(" + res.name + ")";
-          console.log(_addressArray);
-        }
-
-        if (!(addressArray = regexSpecial.exec(res.address))) {
-          addressArray = regexProvince.exec(res.address);
-          reciever.province = addressArray[1];
-          regexReciever(addressArray[3], reciever);
-        } else {
-          reciever.province = addressArray[1];
-          regexReciever(res.address, reciever);
-        }
-        that.setData({ reciever: reciever });
-      }
-    })
-  },
-
-  /**
-   * 省市区选择器级联
-   */
-  bindRegionChange: function (e) {
-    reciever.province = e.detail.value[0];
-    reciever.city = e.detail.value[1];
-    reciever.region = e.detail.value[2];
-    this.setData({
-      reciever: reciever
+      url: '/pages/personal/addr/index?type=SENDER&edit=false&id=' + senderId
     });
   },
 
@@ -219,9 +197,11 @@ Page({
     }
     if (!this.data.express) {
       utils.popError(this, '请选择物流公司');
+      return;
     }
-    if (!this.data.commodityWeight) {
+    if (!this.data.commodityWeight || this.data.commodityWeight <= 0) {
       utils.popError(this, '请填写包裹重量');
+      return;
     }
     let orderInfo = {};
     orderInfo.sender = this.data.sender;
@@ -230,13 +210,49 @@ Page({
     orderInfo.commodityWeight = this.data.commodityWeight;
     orderInfo.remark = this.data.remark;
     orderInfo.expressCompany = this.data.express;
-    let str = JSON.stringify(orderInfo);
+    let orderJson = JSON.stringify(orderInfo);
 
     // TODO 创建订单
     // 跳转至订单明细确认页
     wx.navigateTo({
-      url: './details/index?str=' + str
+      url: './details/index?order=' + orderJson
     });
+  },
+
+  /**
+   * Address JSON to sender or receiver
+   */
+  buildAddress: function (addressJson) {
+    let address = {};
+    address.id = addressJson.id;
+    address.name = addressJson.name;
+    address.mobile = addressJson.tel;
+    address.company = addressJson.company;
+    address.province = addressJson.province;
+    address.city = addressJson.city;
+    address.region = addressJson.region;
+    address.address = addressJson.detail;
+    address.defaultSetting = addressJson.defaultSetting;
+    return address;
+  },
+
+  /**
+   * Expresses JSON to express object array
+   */
+  buildExpresses: function (expressArrayJson) {
+    let expresses = [];
+    for (let i = 0; i < expressArrayJson.length; i++) {
+      let express = {};
+      express.name = expressArrayJson[i].text;
+      express.value = expressArrayJson[i].value;
+      if (i == 0) {
+        express.checked = true;
+      } else {
+        express.checked = false;
+      }
+      expresses.push(express);
+    }
+    return expresses;
   },
 
   /**
@@ -254,6 +270,7 @@ Page({
   },
 
   bindNameInput: function (e) {
+    let reciever = this.data.reciever;
     reciever.name = e.detail.value;
     this.setData({
       reciever: reciever
@@ -261,6 +278,7 @@ Page({
   },
 
   bindMobileInput: function (e) {
+    let reciever = this.data.reciever;
     reciever.mobile = e.detail.value;
     this.setData({
       reciever: reciever
@@ -268,6 +286,7 @@ Page({
   },
 
   bindCompanyInput: function (e) {
+    let reciever = this.data.reciever;
     reciever.company = e.detail.value;
     this.setData({
       reciever: reciever
@@ -275,6 +294,7 @@ Page({
   },
 
   bindAddressInput: function (e) {
+    let reciever = this.data.reciever;
     reciever.address = e.detail.value;
     this.setData({
       reciever: reciever

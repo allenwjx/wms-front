@@ -4,9 +4,9 @@
     <view class="weui-panel">
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_small-appmsg">
-          <view class="weui-cells weui-cells_in-small-appmsg" style='font-size: 30rpx'>
+          <view class="weui-cells weui-cells_in-small-appmsg">
             <view class="weui-cell weui-cell_access">
-              <view class="weui-cell__hd" style='display: flex; font-size: 30rpx'>
+              <view class="weui-cell__hd" style='display: flex;'>
                 <image src="/images/reciever.png" class="min-image" />
               </view>
               <view class="weui-cell__bd">

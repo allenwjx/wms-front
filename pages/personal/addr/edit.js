@@ -5,16 +5,6 @@ const regexSpecial = /^(北京市|天津市|重庆市|上海市|香港特别行�
 const regexProvince = /^(.*?(省|自治区))(.*?)$/;
 const regex = /^(.*?[市]|.*?地区|.*?特别行政区)(.*?[市区县])(.*?)$/g;
 
-let address = {
-  name: '',
-  mobile: '',
-  company: '',
-  province: '',
-  city: '',
-  region: '',
-  address: ''
-};
-
 Page({
 
   /**
@@ -24,7 +14,7 @@ Page({
     errorMsg: '',
     create: false,
     addressType: '',
-    address: address
+    address: {}
   },
 
   /**
@@ -53,55 +43,6 @@ Page({
   },
 
   /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  },
-
-  /**
    * 加载地址
    */
   loadAddress: function (id) {
@@ -112,6 +53,7 @@ Page({
       success: function (response) {
         if (response.data.success) {
           let addr = response.data.data;
+          let address = {};
           address.id = addr.id;
           address.name = addr.name;
           address.mobile = addr.tel;
@@ -242,6 +184,7 @@ Page({
     wx.chooseLocation({
       success: function (res) {
         var addressArray = [];
+        var address = that.data.address;
         function regexSender(addr, address) {
           var _addressArray = regex.exec(addr);
           address.region = _addressArray[1];
@@ -266,6 +209,7 @@ Page({
    * 省市区选择器级联
    */
   bindRegionChange: function (e) {
+    var address = this.data.address;
     address.province = e.detail.value[0];
     address.city = e.detail.value[1];
     address.region = e.detail.value[2];
@@ -275,6 +219,7 @@ Page({
   },
 
   bindNameInput: function (e) {
+    var address = this.data.address;
     address.name = e.detail.value;
     this.setData({
       address: address
@@ -282,6 +227,7 @@ Page({
   },
 
   bindMobileInput: function (e) {
+    var address = this.data.address;
     address.mobile = e.detail.value;
     this.setData({
       address: address
@@ -289,6 +235,7 @@ Page({
   },
 
   bindCompanyInput: function (e) {
+    var address = this.data.address;
     address.company = e.detail.value;
     this.setData({
       address: address
@@ -296,6 +243,7 @@ Page({
   },
 
   bindAddressInput: function (e) {
+    var address = this.data.address;
     address.address = e.detail.value;
     this.setData({
       address: address

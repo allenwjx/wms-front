@@ -8,26 +8,26 @@ Page({
     paymentType: 0
   },
 
-  /**
-   * 订单信息
-   */
-  orderInfo: {
-    sender: null,
-    receiver: null,
-    commodity: null,
-    commodityWeight: 1,
-    remark: '',
-    expressCompany: null
-  },
+  // /**
+  //  * 订单信息
+  //  */
+  // orderInfo: {
+  //   sender: null,
+  //   receiver: null,
+  //   commodity: null,
+  //   commodityWeight: 1,
+  //   remark: '',
+  //   expressCompany: null
+  // },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     // TODO 计算订单价格
-    this.orderInfo = JSON.parse(options.str);
+    let order = JSON.parse(options.order);
     this.setData({
-      orderInfo: this.orderInfo
+      orderInfo: order
     });
   },
 
@@ -40,7 +40,7 @@ Page({
     // 1.根据用户身份，获取该用户的支付方式
     // 1.1 如果是在线支付，唤起微信支付组件
     // 1.2 如果是现结或月结，则更新订单状态为待支付-现结/月结，流转到提货环节
-    
+
   },
 
   /**
