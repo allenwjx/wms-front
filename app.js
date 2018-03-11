@@ -5,6 +5,30 @@ import config from 'config'
 App({
   data: {},
   onLaunch: function (options) {
+      var that = this;
+      //发送 res.code 到后台换取 openId, sessionKey, unionId
+      wx.login({
+          success: function (res) {
+              // 发送 res.code 到后台换取 openId, sessionKey, unionId
+              wx.request({
+                  url: config.api.userLogin,
+                  data: {
+                      jsCode: res.code
+                  },
+                  success: function (res) {
+                      console.log('userLogin:', res.data.data);
+                      wx.setStorageSync('user', res.data.data.userVO);
+                      wx.setStorageSync('sessionId', res.data.data.id);
+                  },
+                  fail: function (e) {
+                      console.log('error:', e);
+                  }
+              })
+          }
+      });
+  },
+
+  onLaunch1: function (options) {
     var that = this;
     // 登录
     wx.checkSession({
@@ -62,6 +86,8 @@ App({
   },
 
   globalData: {
-    userInfo: null
+    userInfo: null,
+    user: null,
+    sessionId: null
   }
 })

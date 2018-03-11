@@ -21,6 +21,8 @@ var config = {
     addressList: `${base}/address/list`,
     setDefaultAddress: `${base}/address/setDefault`,
     updateAddress: `${base}/address/update`,
+    userLogin: `${base}/user/front/login`,
+    userRegiste: `${base}/user/front/registe`,
   }
 };
 
