@@ -1,8 +1,9 @@
 import config from '../../config'
 import utils from '../../utils/util'
 import resource from '../../utils/resource'
-import { Express } from '../../api/express.js'
+import req from '../../utils/request'
 
+const app = getApp()
 const regexSpecial = /^(北京市|天津市|重庆市|上海市|香港特别行政区|澳门特别行政区)/;
 const regexProvince = /^(.*?(省|自治区))(.*?)$/;
 const regex = /^(.*?[市]|.*?地区|.*?特别行政区)(.*?[市区县])(.*?)$/g;
@@ -42,19 +43,16 @@ Page({
    */
   retrieveDefaultSenderAddress: function () {
     let _this = this;
-    wx.request({
-      url: config.api.defaultAddress + '/SENDER',
-      success: function (response) {
-        if (response.data.success) {
-          let addressJson = response.data.data;
-          let sender = _this.buildAddress(addressJson);
-          _this.setData({
-            sender: sender,
-            showDefaultAddress: sender.defaultSetting ? 1 : 2
-          });
-        }
-      }
-    });
+    req.get(config.api.defaultAddress + '/SENDER')
+      .then(res => res.data.data)
+      .then(data => {
+        let addressJson = data;
+        let sender = _this.buildAddress(addressJson);
+        _this.setData({
+          sender: sender,
+          showDefaultAddress: sender.defaultSetting ? 1 : 2
+        });
+      });
   },
 
   /**
@@ -62,20 +60,17 @@ Page({
    */
   listExpresses: function () {
     let _this = this;
-    wx.request({
-      url: config.api.expressList,
-      success: function (response) {
-        if (response.data.success) {
-          let expresses = _this.buildExpresses(response.data.data);
-          _this.setData({ expresses: expresses });
-          for (let i = 0, len = expresses.length; i < len; ++i) {
-            if (expresses[i].checked) {
-              _this.setData({ express: expresses[i] });
-            }
+    req.get(config.api.expressList)
+      .then(res => res.data.data)
+      .then(data => {
+        let expresses = _this.buildExpresses(data);
+        _this.setData({ expresses: expresses });
+        for (let i = 0, len = expresses.length; i < len; ++i) {
+          if (expresses[i].checked) {
+            _this.setData({ express: expresses[i] });
           }
         }
-      }
-    });
+      });
   },
 
   /**

@@ -9,7 +9,7 @@ var config = {
   api: {
     base,
     product: `${base}/data/product`,
-    expressList: `${base}/data/express`,
+    expressList: `/data/express`,
     getGoodsList: `${base}/commodity/list`,
     getGoodsFilterList: `${base}/commodity/filterList`,
     getAgentList: `${base}/agent/list`,
@@ -17,12 +17,12 @@ var config = {
     getManufacturerList: `${base}/manufacturer/list`,
     options: `${base}/opt/enum`,
     address: `${base}/address`,
-    defaultAddress: `${base}/address/default`,
+    defaultAddress: `/address/default`,
     addressList: `${base}/address/list`,
     setDefaultAddress: `${base}/address/setDefault`,
     updateAddress: `${base}/address/update`,
-    userLogin: `${base}/user/front/login`,
-    userRegiste: `${base}/user/front/registe`,
+    userLogin: `${base}/user/login`,
+    userDetail: `${base}/user/detail`,
     inventory: `${base}/inventory`
   }
 };
