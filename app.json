@@ -5,6 +5,7 @@
     "pages/delivery/sender/index",
     "pages/delivery/details/index",
     "pages/inventory/index",
+    "pages/inventory/order/index",    
     "pages/personal/index",
     "pages/personal/order/index",
     "pages/personal/check/index",

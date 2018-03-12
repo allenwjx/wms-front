@@ -1,38 +1,88 @@
 // pages/inventory/index.js
+var config = require('../../config.js')
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    datas: []
+    searchHints: [],
+    inputShowed: false,
+    inputVal: "",
+    inventoryList: []
   },
-
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let datas = [];
-    for (let i = 0; i < 200; i++) {
-      let datax = {
-        a: "文字组合列表",
-        b: "Title",
-        c: "由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。",
-        d: "标题二",
-        e: "由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。",
+     this.queryInventory();
+
+  },
+  queryInventory: function () {
+    var self = this;
+    wx.request({
+      url: config.api.inventory + '/list',
+      method: "GET",
+      // data: {
+      //   name: name
+      // },
+      success: function (response) {
+        console.log(response.data);
+        if (response.data.success) {
+          if (response.data.data){
+            var inventoryList = JSON.stringify(response.data.data);
+            self.setData({ inventoryList: inventoryList });
+          } else {
+            self.setData({ inventoryList: [] });
+          }
+        } else {
+          console.log(response.data);
+          // wx.navigateTo({
+          //   url: '../message/fail?msg=' + response.data.errorMessage
+          // })
+        }
+      },
+      fail: function (e) {
+        console.log(e);
+        wx.navigateTo({
+          url: '../message/fail?msg=获取库存数据失败.'
+        });
       }
-      datas.push(datax);
-    }
-    this.setData({
-      datas: datas
     });
+  },
+  
+  showInput: function () {
+    this.setData({
+      inputShowed: true
+    });
+  },
+  hideInput: function () {
+    this.setData({
+      inputVal: "",
+      inputShowed: false
+    });
+  },
+  clearInput: function () {
+    this.setData({
+      inputVal: ""
+    });
+  },
+  inputTyping: function (e) {
+    this.queryInventory(e.detail.value);
+  },
+  /**
+   * 点击查询提示的条目
+   */
+  tapHint: function (e) {
+    console.log(e);
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    
   },
 
   /**
