@@ -1,5 +1,6 @@
 // pages/inventory/index.js
 var config = require('../../config.js')
+import req from '../../utils/request'
 
 Page({
 
@@ -16,23 +17,18 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-     this.queryInventory();
+    this.queryInventory();
 
   },
   queryInventory: function () {
-    var self = this;
-    wx.request({
-      url: config.api.inventory + '/list',
-      method: "GET",
-      // data: {
-      //   name: name
-      // },
-      success: function (response) {
-        console.log(response.data);
-        if (response.data.success) {
-          if (response.data.data){
-            var inventoryList = JSON.stringify(response.data.data);
-            self.setData({ inventoryList: inventoryList });
+    let self = this;
+    req.get(config.api.inventory + '/list')
+      .then(res => res.data)
+      .then(data => {
+        console.log(data);
+        if (data.success) {
+          if (data.data) {
+            self.setData({ inventoryList: data.data });
           } else {
             self.setData({ inventoryList: [] });
           }
@@ -42,16 +38,9 @@ Page({
           //   url: '../message/fail?msg=' + response.data.errorMessage
           // })
         }
-      },
-      fail: function (e) {
-        console.log(e);
-        wx.navigateTo({
-          url: '../message/fail?msg=获取库存数据失败.'
-        });
-      }
-    });
+      });
   },
-  
+
   showInput: function () {
     this.setData({
       inputShowed: true
@@ -82,7 +71,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    
+
   },
 
   /**

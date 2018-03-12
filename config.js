@@ -23,7 +23,7 @@ var config = {
     updateAddress: `${base}/address/update`,
     userLogin: `${base}/user/login`,
     userDetail: `${base}/user/detail`,
-    inventory: `${base}/inventory`
+    inventory: `/inventory`
   }
 };
 
