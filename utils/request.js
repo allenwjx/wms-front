@@ -15,7 +15,7 @@ class Request {
   constructor() {
     const token = wx.getStorageSync('token')
     if (token) {
-      this._header.token = token
+      this._header.token = token;
     }
   }
 

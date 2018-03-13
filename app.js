@@ -8,6 +8,7 @@ App({
 
   globalData: {
     user: null,
+    wxuser: null
   },
 
   onLaunch: function (options) {
@@ -17,26 +18,32 @@ App({
 
   configReq() {
     let _this = this;
-    req.baseUrl(config.api.base)
-      .interceptor(res => {
-        switch (res.data.errorCode) {
-          case '-2001':
+    req.baseUrl(config.api.base).interceptor(res => {
+      if (res.statusCode == 200) {
+        let resultCode = res.data.errorCode;
+        switch (resultCode) {
+          case null:
+          case 0:
+          case '':
+          case '0':
+            return true;
+          case 'JG0510001004':
+            // 用户会话过期
             wx.showToast({
               icon: 'loading',
               title: '重新登录',
             })
-            _this.login()
+            _this.login();
             return false;
-          case null:
-          case '':
-            return true;
           default:
-            wx.showToast({
-              title: '操作失败',
-            })
-            return false;
+            return true;
         }
-      })
+      } else {
+        wx.showToast({
+          title: '操作失败，服务器异常'
+        })
+      }
+    })
   },
 
   /**
@@ -90,6 +97,7 @@ App({
           success: function (res) {
             let rawUserInfo = JSON.parse(res.rawData);
             wx.setStorageSync('wxuser', rawUserInfo);
+            _this.globalData.wxUser = rawUserInfo;
           }
         })
       },
@@ -124,6 +132,7 @@ App({
         let rawUserInfo = JSON.parse(res.rawData);
         _this.doBGLogin(jsCode, rawUserInfo.nickName);
         wx.setStorageSync('wxuser', rawUserInfo);
+        _this.globalData.wxUser = rawUserInfo;
       }
     })
   },
@@ -145,6 +154,9 @@ App({
           wx.setStorageSync('user', res.data.data);
           wx.setStorageSync('token', res.data.data.token);
           req.token(res.data.data.token);
+          wx.reLaunch({
+            url: '/' + getCurrentPages()[0].route
+          })
         } else {
           console.log('用户登录失败：' + res.data.errorMessage);
         }

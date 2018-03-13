@@ -2,11 +2,14 @@
 <view class='page'>
   <view class='user'>
     <view class='face'>
-      <image src='{{userInfo.avatarUrl}}'></image>
+      <image src='{{wxUser.avatarUrl}}'></image>
     </view>
-    <text>{{userInfo.nickName}}</text>
+    <text>{{wxUser.nickName}}</text>
   </view>
-
+  <!-- <button open-type="getPhoneNumber" bindgetphonenumber="bindMobile">绑定手机号</button>
+   <view class="page__bd" wx-if="{{mineMobile}}">
+    <input class="weui-cell" style='width: 100%' bindinput="bindMobileInput" type="number" value="{{mineMobile}}" placeholder="手机号/固定号码" />
+  </view>  -->
   <view class="page__bd">
     <view class="weui-panel" style='margin-top: 10px;'>
       <view class="weui-panel__bd">

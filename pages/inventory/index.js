@@ -17,12 +17,12 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.queryInventory();
+    this.queryInventory('');
 
   },
-  queryInventory: function () {
+  queryInventory: function (name) {
     let self = this;
-    req.get(config.api.inventory + '/list')
+    req.get(config.api.inventory + '/list', {name: name})
       .then(res => res.data)
       .then(data => {
         console.log(data);

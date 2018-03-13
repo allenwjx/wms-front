@@ -14,7 +14,6 @@ Page({
    * 页面的初始数据
    */
   data: {
-    commodityTypes: resource.commodityTypes,
     commodity: {},
     showModalStatus: false,
     animationData: null,
@@ -25,6 +24,8 @@ Page({
     sender: {},
     reciever: {},
     showDefaultAddress: 0,
+    commodityInventory: {},
+    orderInfo: {},
     errorMsg: ''
   },
 
@@ -32,26 +33,51 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log("onLoad");
     wx.setNavigationBarTitle({ title: '寄快递' });
     // 加载默认寄件人地址
     this.retrieveDefaultSenderAddress();
+    this.queryCommodity(options.id);
+    this.data.orderInfo.inventoryId = options.id;
+    
     // 加载快递公司列表
     this.listExpresses();
   },
+  queryCommodity: function(id) {
+    let self = this;
+    req.get(config.api.inventory, {id: id})
+      .then(res => res.data)
+      .then(data => {
+        if (data.success) {
+          self.setData({ commodityInventory: data.data});
+          self.data.orderInfo.commodityId = data.data.commodityId;
+          self.data.orderInfo.inventory = data.data;
+        }
+      });
+    
+  },
+  
 
   /**
    * 获取默认寄件人地址
    */
   retrieveDefaultSenderAddress: function () {
-    let _this = this;
+    var self = this;
     req.get(config.api.defaultAddress + '/SENDER')
       .then(res => res.data.data)
       .then(data => {
+        if(!data) {
+          self.setData({
+            showDefaultAddress: 2
+          });
+          return;
+        }
         let addressJson = data;
-        let sender = _this.buildAddress(addressJson);
-        _this.setData({
+        self.data.orderInfo.sender = data;
+        let sender = self.buildAddress(addressJson);
+        self.setData({
           sender: sender,
-          showDefaultAddress: sender.defaultSetting ? 1 : 2
+          showDefaultAddress: 0
         });
       });
   },
@@ -108,6 +134,9 @@ Page({
    * 省市区选择器级联
    */
   bindRegionChange: function (e) {
+    this.data.orderInfo.receiverProvince = e.detail.value[0];   
+    this.data.orderInfo.receiverCity = e.detail.value[1];   
+    this.data.orderInfo.receiverRegion = e.detail.value[2];   
     let reciever = this.data.reciever;
     reciever.province = e.detail.value[0];
     reciever.city = e.detail.value[1];
@@ -122,7 +151,7 @@ Page({
    */
   navigateToSender: function (event) {
     wx.navigateTo({
-      url: './sender/index'
+      url: '/pages/personal/addr/index?type=SENDER&edit=true'
     });
   },
 
@@ -155,7 +184,7 @@ Page({
     for (let i = 0, len = expresses.length; i < len; ++i) {
       expresses[i].checked = expresses[i].value == e.detail.value;
       if (expresses[i].checked) {
-        this.setData({ express: expresses[i] });
+        this.data.orderInfo.expressType = e.detail.value;
       }
     }
     this.setData({
@@ -167,51 +196,38 @@ Page({
    * 提交快递申请
    */
   book: function (e) {
-    if (!this.data.sender.name) {
+    if (!this.data.orderInfo.sender) {
       utils.popError(this, '请填写寄件人');
       return;
     }
-    if (!this.data.sender.mobile) {
-      utils.popError(this, '请填写寄件人联系方式');
-      return;
-    }
-    if (!this.data.sender.address || !this.data.sender.province || !this.data.sender.city || !this.data.sender.region) {
-      utils.popError(this, '请填写寄件地址');
-      return;
-    }
-    if (!this.data.reciever.name) {
+
+    if (!this.data.orderInfo.receiverName) {
       utils.popError(this, '请填写收件人');
       return;
     }
-    if (!this.data.reciever.mobile) {
+    if (!this.data.orderInfo.receiverTel) {
       utils.popError(this, '请填写收件人联系方式');
       return;
     }
-    if (!this.data.reciever.address || !this.data.reciever.province || !this.data.reciever.city || !this.data.reciever.region) {
+    if (!this.data.orderInfo.receiverAddressDetail || !this.data.orderInfo.receiverProvince || !this.data.orderInfo.receiverCity || !this.data.orderInfo.receiverRegion) {
       utils.popError(this, '请填写收件地址');
       return;
     }
-    if (!this.data.express) {
+    if (!this.data.orderInfo.expressType) {
       utils.popError(this, '请选择物流公司');
       return;
     }
-    if (!this.data.commodityWeight || this.data.commodityWeight <= 0) {
-      utils.popError(this, '请填写包裹重量');
+    if (!this.data.orderInfo.commodityQuanity || this.data.orderInfo.commodityQuanity <= 0 || this.data.commodityQuanity > this.data.commodityInventory.amount) {
+      utils.popError(this, '请填写商品数量');
       return;
     }
-    let orderInfo = {};
-    orderInfo.sender = this.data.sender;
-    orderInfo.receiver = this.data.reciever;
-    orderInfo.commodity = this.data.commodity;
-    orderInfo.commodityWeight = this.data.commodityWeight;
-    orderInfo.remark = this.data.remark;
-    orderInfo.expressCompany = this.data.express;
-    let orderJson = JSON.stringify(orderInfo);
+    
+    let orderJson = JSON.stringify(this.data.orderInfo);
 
     // TODO 创建订单
     // 跳转至订单明细确认页
     wx.navigateTo({
-      url: './details/index?order=' + orderJson
+      url: '/pages/inventory/details/index?order=' + orderJson
     });
   },
 
@@ -250,6 +266,7 @@ Page({
     }
     return expresses;
   },
+  
 
   /**
    * 呈现商品类型页面
@@ -264,46 +281,30 @@ Page({
   hideModal: function () {
     utils.hideModal(this);
   },
-
+  /**
+     * 填写的商品数量
+     */
+  bindCommodityAmount: function (e) {
+    this.data.orderInfo.commodityQuanity = e.detail.value;
+  },
   bindNameInput: function (e) {
-    let reciever = this.data.reciever;
-    reciever.name = e.detail.value;
-    this.setData({
-      reciever: reciever
-    });
+    this.data.orderInfo.receiverName = e.detail.value;
   },
 
   bindMobileInput: function (e) {
-    let reciever = this.data.reciever;
-    reciever.mobile = e.detail.value;
-    this.setData({
-      reciever: reciever
-    });
+    this.data.orderInfo.receiverTel = e.detail.value;
   },
 
   bindCompanyInput: function (e) {
-    let reciever = this.data.reciever;
-    reciever.company = e.detail.value;
-    this.setData({
-      reciever: reciever
-    });
+    this.data.orderInfo.receiverCompany = e.detail.value;
   },
 
   bindAddressInput: function (e) {
-    let reciever = this.data.reciever;
-    reciever.address = e.detail.value;
-    this.setData({
-      reciever: reciever
-    });
-  },
-
-  bindCommodityWeight: function (e) {
-    this.setData({
-      commodityWeight: e.detail.value
-    });
+    this.data.orderInfo.receiverAddressDetail = e.detail.value;
   },
 
   bindRemark: function (e) {
+    this.data.orderInfo.remark = e.detail.value;
     this.setData({
       remark: e.detail.value
     });
@@ -313,48 +314,50 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    console.log("onReady");
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    console.log("onShow");
+    // 加载默认寄件人地址
+    this.retrieveDefaultSenderAddress();
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
+    console.log("onHide");
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+    console.log("onUnload");
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    console.log("onPullDownRefresh");
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    console.log("onReachBottom");
   },
 
   /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    console.log("onShareAppMessage");
   }
 })

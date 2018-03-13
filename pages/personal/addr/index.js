@@ -1,4 +1,6 @@
 import config from '../../../config'
+import req from '../../../utils/request'
+
 Page({
 
   /**
@@ -77,40 +79,40 @@ Page({
    */
   listAddresses: function () {
     let _this = this;
-    wx.request({
-      url: config.api.addressList + '/' + this.data.addressType,
-      success: function (response) {
-        if (response.data.success) {
-          let addressModels = response.data.data;
-          let addresses = [];
-          let defaultAddresses = [];
-          let otherAddresses = [];
-          for (let i = 0; i < addressModels.length; i++) {
-            var address = {
-              id: addressModels[i].id,
-              name: addressModels[i].name,
-              mobile: addressModels[i].tel,
-              company: addressModels[i].company,
-              province: addressModels[i].province,
-              city: addressModels[i].city,
-              region: addressModels[i].region,
-              address: addressModels[i].detail,
-              defaultSetting: addressModels[i].defaultSetting
-            };
-            if (address.defaultSetting) {
-              defaultAddresses.push(address);
-            } else {
-              otherAddresses.push(address);
-            }
+    let url = config.api.addressList + '/' + this.data.addressType;
+    req.get(url).then(res => res.data).then(result => {
+      if (result.success) {
+        let addressModels = result.data;
+        let addresses = [];
+        let defaultAddresses = [];
+        let otherAddresses = [];
+        for (let i = 0; i < addressModels.length; i++) {
+          var address = {
+            id: addressModels[i].id,
+            name: addressModels[i].name,
+            mobile: addressModels[i].tel,
+            company: addressModels[i].company,
+            province: addressModels[i].province,
+            city: addressModels[i].city,
+            region: addressModels[i].region,
+            address: addressModels[i].detail,
+            defaultSetting: addressModels[i].defaultSetting
+          };
+          if (address.defaultSetting) {
+            defaultAddresses.push(address);
+          } else {
+            otherAddresses.push(address);
           }
-          for (let i = 0; i < defaultAddresses.length; i++) {
-            addresses.push(defaultAddresses[i]);
-          }
-          for (let i = 0; i < otherAddresses.length; i++) {
-            addresses.push(otherAddresses[i]);
-          }
-          _this.setData({ addresses: addresses });
         }
+        for (let i = 0; i < defaultAddresses.length; i++) {
+          addresses.push(defaultAddresses[i]);
+        }
+        for (let i = 0; i < otherAddresses.length; i++) {
+          addresses.push(otherAddresses[i]);
+        }
+        _this.setData({ addresses: addresses });
+      } else {
+        wx.showToast({ icon: 'none', title: '加载用户地址列表失败' });
       }
     });
   },
@@ -121,13 +123,10 @@ Page({
   setDefaultAddress: function (e) {
     let _this = this;
     let id = e.currentTarget.dataset.id;
-    wx.request({
-      method: 'POST',
-      url: config.api.setDefaultAddress + '/' + id + '/' + this.data.addressType,
-      success: function (response) {
-        if (response.data.success) {
-          _this.listAddresses();
-        }
+    let url = config.api.setDefaultAddress + '/' + id + '/' + this.data.addressType;
+    req.post(url).then(res => res.data).then(result => {
+      if (result.success) {
+        _this.listAddresses();
       }
     });
   },
@@ -144,13 +143,10 @@ Page({
       cancelText: "取消",
       success: function (res) {
         if (res.confirm) {
-          wx.request({
-            method: 'DELETE',
-            url: config.api.address + '/' + addrId,
-            success: function (response) {
-              if (response.data.success) {
-                _this.listAddresses();
-              }
+          let url = config.api.address + '/' + addrId;
+          req.delete(url).then(res => res.data).then(result => {
+            if (result.success) {
+              _this.listAddresses();
             }
           });
         }

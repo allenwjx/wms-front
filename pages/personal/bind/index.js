@@ -2,6 +2,7 @@
 const app = getApp()
 var config = require('../../../config.js')
 var util = require('../../../utils/util.js')
+import req from '../../../utils/request'
 
 Page({
 
@@ -21,26 +22,21 @@ Page({
   },
 
   loadData: function () {
-    let that = this
-    wx.request({
-      url: config.api.getGoodsList,
-      data: {},
-      success: function (res) {
-        if (res.data.success) {
-          that.setData({ goodsList: res.data.data })
-        }
+    let that = this;
+    req.get(config.api.getGoodsList).then(res => res.data).then(result => {
+      if (result.success) {
+        that.setData({ goodsList: result.data })
+      } else {
+        wx.showToast({ icon: 'none', title: '获取商品列表失败' });
       }
-    })
-
-    wx.request({
-      url: config.api.getManufacturerList,
-      data: {},
-      success: function (res) {
-        if (res.data.success) {
-          that.setData({ manufacturerList: res.data.data })
-        }
+    });
+    req.get(config.api.getManufacturerList).then(res => res.data).then(result => {
+      if (result.success) {
+        that.setData({ manufacturerList: result.data })
+      } else {
+        wx.showToast({ icon: 'none', title: '获取厂商列表失败' });
       }
-    })
+    });
   },
 
   bindAgentChange: function (e) {
@@ -64,16 +60,13 @@ Page({
     that.setData({
       manufacturerIndex: e.detail.value
     })
-
-    wx.request({
-      url: config.api.getGoodsFilterList,
-      data: { manufacturerId: that.data.manufacturerList[e.detail.value].id },
-      success: function (res) {
-        if (res.data.success) {
-          that.setData({ goodsList: res.data.data });
-        }
+    req.get(config.api.getGoodsFilterList).then(res => res.data).then(result => {
+      if (result.success) {
+        that.setData({ goodsList: result.data });
+      } else {
+        wx.showToast({ icon: 'none', title: '获取商品列表失败' });
       }
-    })
+    });
   },
 
   searchAgent: function () {
@@ -86,27 +79,20 @@ Page({
     let that = this;
     wx.scanCode({
       success: (res) => {
-        wx.request({
-          url: res.result.split('?')[0] + '?action=bind',
-          method: "POST",
-          data: {
-            commodityId: util.getUrlParam(res.result, 'commodityId'),
-            serialNo: util.getUrlParam(res.result, 'serialNo'),
-            bindCommodityId: that.data.bindCommodityId,
-            agentId: that.data.agent.id
-          },
-          success: function (res) {
-            if (res.data.success) {
-              wx.showToast({ title: '绑定成功' });
-            }
-          },
-          fail: function (e) {
-            console.log(e)
-            wx.navigateTo({
-              url: '../message/fail?msg=货物绑定失败'
-            });
+        let url = res.result.split('?')[0] + '?action=bind';
+        let param = {
+          commodityId: util.getUrlParam(res.result, 'commodityId'),
+          serialNo: util.getUrlParam(res.result, 'serialNo'),
+          bindCommodityId: that.data.bindCommodityId,
+          agentId: that.data.agent.id
+        };
+        req.post(url, param).then(res => res.data).then(result => {
+          if (result.success) {
+            wx.showToast({ title: '绑定成功' });
+          } else {
+            wx.navigateTo({ url: '../message/fail?msg=货物绑定失败' });
           }
-        })
+        });
       }
     })
   }

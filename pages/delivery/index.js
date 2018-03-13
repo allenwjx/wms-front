@@ -43,16 +43,17 @@ Page({
    */
   retrieveDefaultSenderAddress: function () {
     let _this = this;
-    req.get(config.api.defaultAddress + '/SENDER')
-      .then(res => res.data.data)
-      .then(data => {
-        let addressJson = data;
-        let sender = _this.buildAddress(addressJson);
+    req.get(config.api.defaultAddress + '/SENDER').then(res => res.data).then(result => {
+      if (result.success) {
+        let sender = _this.buildAddress(result.data);
         _this.setData({
           sender: sender,
           showDefaultAddress: sender.defaultSetting ? 1 : 2
         });
-      });
+      } else {
+        wx.showToast({ icon: 'none', title: '获取默认寄件人信息失败' });
+      }
+    });
   },
 
   /**
@@ -60,17 +61,19 @@ Page({
    */
   listExpresses: function () {
     let _this = this;
-    req.get(config.api.expressList)
-      .then(res => res.data.data)
-      .then(data => {
-        let expresses = _this.buildExpresses(data);
+    req.get(config.api.expressList).then(res => res.data).then(result => {
+      if (result.success) {
+        let expresses = _this.buildExpresses(result.data);
         _this.setData({ expresses: expresses });
         for (let i = 0, len = expresses.length; i < len; ++i) {
           if (expresses[i].checked) {
             _this.setData({ express: expresses[i] });
           }
         }
-      });
+      } else {
+        wx.showToast({ icon: 'none', title: '获取快递公司列表失败' });
+      }
+    });
   },
 
   /**

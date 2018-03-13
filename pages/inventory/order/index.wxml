@@ -7,19 +7,40 @@
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_small-appmsg">
           <view class="weui-cells weui-cells_in-small-appmsg">
-            <!-- 选择寄件人 -->
-            <navigator url="/pages/delivery/sender/index" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-              <view class="weui-cell__hd" style='display: flex;  '>
-                <image src="/images/send.png" class="min-image" />
+            <view class="weui-cell weui-cell_access">
+              <view class="weui-cell__hd" style='display: flex;'>
+                <image src="/images/reciever.png" class="min-image" />
               </view>
               <view class="weui-cell__bd">
-                <text>寄件信息</text>
+                <text>寄件人信息</text>
               </view>
-              <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-            </navigator>
+            </view>
+            <!-- 选择寄件人 -->
+            <view class="weui-form-preview__bd" wx:if="{{showDefaultAddress == 0}}">
+              <view class="weui-form-preview__item">
+                <view class="new-preview__label__item">寄件人</view>
+                <view class="new-preview__value">{{sender.name}}</view>
+              </view>
+              <view class="weui-form-preview__item">
+                <view class="new-preview__label__item">手机号</view>
+                <view class="new-preview__value">{{sender.mobile}}</view>
+              </view>
+              <view class="weui-form-preview__item">
+                <view class="new-preview__label__item">公司名称</view>
+                <view class="new-preview__value">{{sender.company}}</view>
+              </view>
+              <view class="weui-form-preview__item">
+                <view class="new-preview__label__item">发货省市区</view>
+                <view class="new-preview__value">{{sender.province}} {{sender.city}} {{sender.region}}</view>
+              </view>
+              <view class="weui-form-preview__item">
+                <view class="new-preview__label__item">详细地址</view>
+                <view class="new-preview__value">{{sender.address}}</view>
+              </view>
+            </view>
             <!-- /选择寄件人 -->
             <!-- 默认寄件人 -->
-            <view wx:if="{{showDefaultAddress == 1}}">
+            <!-- <view wx:if="{{showDefaultAddress == 1}}">
               <view class="weui-form-preview">
                 <view class="weui-form-preview__bd">
                   <view class="weui-form-preview__item">
@@ -35,15 +56,15 @@
                   </view>
                 </view>
               </view>
-            </view>
-            <view wx:if="{{showDefaultAddress == 2}}" class="weui-cell">
+            </view> -->
+             <view wx:if="{{showDefaultAddress == 2}}" class="weui-cell">
               <view class="weui-cell__bd">
                 <text>还未设置寄件人信息</text>
               </view>
               <view class="weui-cell__ft" style='color: #ff8000' bindtap='navigateToSender'>
                 <text>去设置</text>
               </view>
-            </view>
+            </view> 
             <!-- /默认寄件人 -->
           </view>
         </view>
@@ -64,9 +85,9 @@
                 <text>收件信息</text>
               </view>
             </view>
-            <input class="weui-cell" style='width: 100%' bindinput="bindNameInput" value="{{reciever.name}}" placeholder="收件人姓名" />
-            <input class="weui-cell" style='width: 100%' bindinput="bindMobileInput" type="number" value="{{reciever.mobile}}" placeholder="手机号/固定号码" />
-            <input class="weui-cell" style='width: 100%' bindinput="bindCompanyInput" value="{{reciever.company}}" placeholder="收件人公司（选填）" />
+            <input class="weui-cell" style='width: 100%' bindinput="bindNameInput" placeholder="收件人姓名" />
+            <input class="weui-cell" style='width: 100%' bindinput="bindMobileInput" type="number" placeholder="手机号/固定号码" />
+            <input class="weui-cell" style='width: 100%' bindinput="bindCompanyInput" placeholder="收件人公司（选填）" />
             <view class="weui-cell">
               <view class="weui-cell__bd">
                 <picker mode="region" bindchange="bindRegionChange">
@@ -91,21 +112,24 @@
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_small-appmsg">
           <view class="weui-cells weui-cells_in-small-appmsg">
-            <!-- 选择货物类型 -->
-            <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap='showModal'>
+            <view class='weui-cell'>
               <view class="weui-cell__hd" style='display: flex;'>
                 <image src="/images/bags.png" class="min-image" />
               </view>
               <view class="weui-cell__bd">
-                <text>物品类型</text>
+                <text>物品明细</text>
               </view>
-              <view class="weui-cell__ft weui-cell__ft_in-access">{{commodity.name}}</view>
-            </navigator>
-            <!-- /选择货物类型 -->
+            </view>
+            <view class='weui-cell'>
+              <view class="weui-form-preview__item">
+                  <view class="new-preview__label__item">{{commodityInventory.name}}</view>
+                  <view class="new-preview__value">{{commodityInventory.amount}}/ {{commodityInventory.unit}}</view>
+              </view>
+            </view>
             <!-- 包裹重量 -->
             <view class='weui-cell'>
               <view class="weui-cell__bd" style='display: flex'>
-                <input class="weui-cell" style='width: 100%' bindinput="bindCommodityWeight" type="digit" placeholder="填写包裹重量，单位（千克）" />
+                <input class="weui-cell" style='width: 100%' bindinput="bindCommodityAmount" type="digit" placeholder="填写商品数量" />
               </view>
             </view>
             <!-- /包裹重量 -->
@@ -157,36 +181,6 @@
   </view>
 </view>
 
-<!-- 商品选择列表 -->
-<view animation="{{animationData}}" class="zhezhao_attr_box" wx:if="{{showModalStatus}}">
-  <view class="weui-panel">
-    <view class="weui-panel__bd">
-      <view class="weui-media-box weui-media-box_small-appmsg">
-        <view class="weui-cells weui-cells_in-small-appmsg">
-          <view class="weui-cell weui-cell_access">
-            <view class="weui-cell__hd" style='display: flex;'>
-              <image src="/images/bags.png" class="min-image" />
-            </view>
-            <view class="weui-cell__bd">
-              <text>选择物品类型</text>
-            </view>
-          </view>
-          <view class='weui-cell'>
-            <view class="weui-cell__bd">
-              <view class="weui-grids" style='border: 0px;'>
-                <block wx:for="{{commodityTypes}}" wx:key="*this">
-                  <view url="" class="weui-grid" style='border: 0px;' bindtap='selectCommodity' data-name="{{item.name}}" data-value="{{item.value}}">
-                    <image class="weui-grid__icon" src="{{item.url}}" />
-                    <view class="weui-grid__label">{{item.name}}</view>
-                  </view>
-                </block>
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
-    </view>
-  </view>
-</view>
+
 <!-- 遮罩 -->
 <view class="zhezhao_screendeModal" wx:if="{{showModalStatus}}"></view>

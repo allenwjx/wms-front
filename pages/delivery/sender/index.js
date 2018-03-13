@@ -1,5 +1,6 @@
 import utils from '../../../utils/util'
 import config from '../../../config'
+import req from '../../../utils/request'
 
 let app = getApp();
 const regexSpecial = /^(北京市|天津市|重庆市|上海市|香港特别行政区|澳门特别行政区)/;
@@ -7,7 +8,7 @@ const regexProvince = /^(.*?(省|自治区))(.*?)$/;
 const regex = /^(.*?[市]|.*?地区|.*?特别行政区)(.*?[市区县])(.*?)$/g;
 
 Page({
-  
+
   /**
    * 页面的初始数据
    */
@@ -85,29 +86,26 @@ Page({
     }
 
     // 添加新寄件人
-    wx.request({
-      url: config.api.address,
-      method: "POST",
-      data: {
-        name: this.data.sender.name,
-        tel: this.data.sender.mobile,
-        province: this.data.sender.province,
-        city: this.data.sender.city,
-        region: this.data.sender.region,
-        detail: this.data.sender.address,
-        company: this.data.sender.company,
-        addressType: 'SENDER',
-        defaultSetting: false
-      },
-      success: function (response) {
+    var param = {
+      name: this.data.sender.name,
+      tel: this.data.sender.mobile,
+      province: this.data.sender.province,
+      city: this.data.sender.city,
+      region: this.data.sender.region,
+      detail: this.data.sender.address,
+      company: this.data.sender.company,
+      addressType: 'SENDER',
+      defaultSetting: false
+    };
+    req.post(config.api.address, param).then(res => res.data).then(result => {
+      if (result.success) {
         var pages = getCurrentPages();
-        pages[pages.length - 2].setData({ sender: _this.data.sender });
+        let prePage = pages[pages.length - 2];
+        prePage.setData({ sender: _this.data.sender });
+        prePage.setData({ showDefaultAddress: 1 });
         wx.navigateBack();
-      },
-      fail: function (e) {
-        var pages = getCurrentPages();
-        pages[pages.length - 2].setData({ sender: _this.data.sender });
-        wx.navigateBack();
+      } else {
+        wx.showToast({ icon: 'none', title: '添加寄件人失败' });
       }
     });
   },
