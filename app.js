@@ -27,7 +27,7 @@ App({
           case '':
           case '0':
             return true;
-          case '-2001':
+          case 'JG0510001004':
             // 用户会话过期
             wx.showToast({
               icon: 'loading',
