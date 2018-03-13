@@ -100,7 +100,9 @@ Page({
     req.post(config.api.address, param).then(res => res.data).then(result => {
       if (result.success) {
         var pages = getCurrentPages();
-        pages[pages.length - 2].setData({ sender: _this.data.sender });
+        let prePage = pages[pages.length - 2];
+        prePage.setData({ sender: _this.data.sender });
+        prePage.setData({ showDefaultAddress: 1 });
         wx.navigateBack();
       } else {
         wx.showToast({ icon: 'none', title: '添加寄件人失败' });
