@@ -8,19 +8,17 @@ var config = {
   // API接口
   api: {
     base,
-    product: `${base}/data/product`,
     expressList: `/data/express`,
-    getGoodsList: `${base}/commodity/list`,
-    getGoodsFilterList: `${base}/commodity/filterList`,
-    getAgentList: `${base}/agent/list`,
-    getAgentFilterList: `${base}/agent/filterList`,
-    getManufacturerList: `${base}/manufacturer/list`,
-    options: `${base}/opt/enum`,
-    address: `${base}/address`,
+    getGoodsList: `/commodity/list`,
+    getGoodsFilterList: `/commodity/filterList`,
+    getAgentFilterList: `/agent/filterList`,
+    getManufacturerList: `/manufacturer/list`,
+    options: `/opt/enum`,
+    address: `/address`,
     defaultAddress: `/address/default`,
-    addressList: `${base}/address/list`,
-    setDefaultAddress: `${base}/address/setDefault`,
-    updateAddress: `${base}/address/update`,
+    addressList: `/address/list`,
+    setDefaultAddress: `/address/setDefault`,
+    updateAddress: `/address/update`,
     userLogin: `${base}/user/login`,
     userDetail: `${base}/user/detail`
   }

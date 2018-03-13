@@ -1,4 +1,5 @@
 import utils from '../../../utils/util'
+import req from '../../../utils/request'
 import config from '../../../config'
 
 const regexSpecial = /^(北京市|天津市|重庆市|上海市|香港特别行政区|澳门特别行政区)/;
@@ -47,30 +48,26 @@ Page({
    */
   loadAddress: function (id) {
     let _this = this;
-    wx.request({
-      url: config.api.address + '/' + id,
-      method: "GET",
-      success: function (response) {
-        if (response.data.success) {
-          let addr = response.data.data;
-          let address = {};
-          address.id = addr.id;
-          address.name = addr.name;
-          address.mobile = addr.tel;
-          address.company = addr.company;
-          address.province = addr.province;
-          address.city = addr.city;
-          address.region = addr.region;
-          address.address = addr.detail;
-          address.addressType = addr.addressType;
-          address.defaultSetting = addr.defaultSetting;
-          _this.setData({
-            address: address
-          });
-        }
-      },
-      fail: function (e) {
-        console(e);
+    let url = config.api.address + '/' + id;
+    req.get(url).then(res => res.data).then(result => {
+      if (result.success) {
+        let addr = result.data;
+        let address = {};
+        address.id = addr.id;
+        address.name = addr.name;
+        address.mobile = addr.tel;
+        address.company = addr.company;
+        address.province = addr.province;
+        address.city = addr.city;
+        address.region = addr.region;
+        address.address = addr.detail;
+        address.addressType = addr.addressType;
+        address.defaultSetting = addr.defaultSetting;
+        _this.setData({
+          address: address
+        });
+      } else {
+        wx.showToast({ icon: 'none', title: '加载地址失败' });
       }
     });
   },
@@ -93,34 +90,23 @@ Page({
       return;
     }
     // 更新寄件人信息
-    wx.request({
-      url: config.api.updateAddress,
-      method: "POST",
-      data: {
-        id: this.data.address.id,
-        name: this.data.address.name,
-        tel: this.data.address.mobile,
-        province: this.data.address.province,
-        city: this.data.address.city,
-        region: this.data.address.region,
-        detail: this.data.address.address,
-        company: this.data.address.company,
-        addressType: this.data.address.addressType,
-        defaultSetting: this.data.address.defaultSetting
-      },
-      success: function (response) {
-        if (response.data.success) {
-          wx.navigateBack();
-        } else {
-          console.log(response.data.errorMessage)
-          wx.showToast({ title: '更新失败' });
-        }
-      },
-      fail: function (e) {
-        console.log(e)
-        wx.navigateTo({
-          url: '/page/message/fail?msg=更新地址信息错误'
-        });
+    let param = {
+      id: this.data.address.id,
+      name: this.data.address.name,
+      tel: this.data.address.mobile,
+      province: this.data.address.province,
+      city: this.data.address.city,
+      region: this.data.address.region,
+      detail: this.data.address.address,
+      company: this.data.address.company,
+      addressType: this.data.address.addressType,
+      defaultSetting: this.data.address.defaultSetting
+    };
+    req.post(config.api.updateAddress, param).then(res => res.data).then(result => {
+      if (result.success) {
+        wx.navigateBack();
+      } else {
+        wx.showToast({ icon: 'none', title: '地址更新失败' });
       }
     });
   },
@@ -143,35 +129,22 @@ Page({
       return;
     }
     // 添加新寄件人
-    wx.request({
-      url: config.api.address,
-      method: "POST",
-      data: {
-        name: this.data.address.name,
-        tel: this.data.address.mobile,
-        province: this.data.address.province,
-        city: this.data.address.city,
-        region: this.data.address.region,
-        detail: this.data.address.address,
-        company: this.data.address.company,
-        addressType: this.data.addressType,
-        defaultSetting: false
-      },
-      success: function (response) {
-        if (response.data.success) {
-          wx.navigateBack();
-        } else {
-          console.log(response.data.errorMessage);
-          wx.showToast({
-            title: '添加失败',
-          })
-        }
-      },
-      fail: function (e) {
-        console.log(e);
-        wx.showToast({
-          title: '添加失败',
-        })
+    let param = {
+      name: this.data.address.name,
+      tel: this.data.address.mobile,
+      province: this.data.address.province,
+      city: this.data.address.city,
+      region: this.data.address.region,
+      detail: this.data.address.address,
+      company: this.data.address.company,
+      addressType: this.data.addressType,
+      defaultSetting: false
+    };
+    req.post(config.api.address, param).then(res => res.data).then(result => {
+      if (result.success) {
+        wx.navigateBack();
+      } else {
+        wx.showToast({ icon: 'none', title: '新增地址失败' });
       }
     });
   },

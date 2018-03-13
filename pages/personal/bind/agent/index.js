@@ -1,6 +1,7 @@
 const app = getApp()
 var config = require('../../../../config.js')
 var util = require('../../../../utils/util.js')
+import req from '../../../../utils/request'
 
 Page({
   data: {
@@ -34,15 +35,16 @@ Page({
     that.setData({
       inputVal: e.detail.value
     });
-    wx.request({
-      url: config.api.getAgentFilterList,
-      data: { condition: that.data.inputVal },
-      success: function (res) {
-        if (res.data.success) {
-          that.setData({ agentList: res.data.data })
-        }
+    let param = {
+      condition: that.data.inputVal
+    };
+    req.get(config.api.getAgentFilterList, param).then(res => res.data).then(result => {
+      if (result.success) {
+        that.setData({ agentList: result.data })
+      } else {
+        wx.showToast({ icon: 'none', title: '获取代理商列表失败' });
       }
-    })
+    });
   },
 
   //选择代理人

@@ -1,7 +1,7 @@
-// pages/me/index.js
 const app = getApp()
 var config = require('../../config.js')
 var util = require('../../utils/util.js')
+import req from '../../utils/request'
 
 Page({
 
@@ -27,30 +27,19 @@ Page({
     wx.scanCode({
       success: (response) => {
         // 获取绑定商品信息
-        wx.request({
-          url: response.result.split('?')[0] + '?action=view',
-          method: "GET",
-          data: {
-            commodityId: util.getUrlParam(response.result, 'commodityId'),
-            serialNo: util.getUrlParam(response.result, 'serialNo')
-          },
-          success: function (response) {
-            if (response.data.success) {
-              var shipRecordDetails = JSON.stringify(response.data.data);
-              wx.navigateTo({
-                url: './check/index?shipRecordDetails=' + shipRecordDetails
-              })
-            } else {
-              wx.navigateTo({
-                url: '../message/fail?msg=' + response.data.errorMessage
-              })
-            }
-          },
-          fail: function (e) {
-            console.log(e);
-            wx.navigateTo({
-              url: '../message/fail?msg=扫码验真失败'
-            });
+        let url = response.result.split('?')[0] + '?action=view';
+        let commodityId = util.getUrlParam(response.result, 'commodityId');
+        let serialNo = util.getUrlParam(response.result, 'serialNo');
+        let param = {
+          commodityId: commodityId,
+          serialNo: serialNo
+        };
+        req.get(url, param).then(res => res.data).then(result => {
+          if (result.success) {
+            var shipRecordDetails = JSON.stringify(result.data);
+            wx.navigateTo({ url: './check/index?shipRecordDetails=' + shipRecordDetails });
+          } else {
+            wx.navigateTo({ url: '../message/fail?msg=' + data.errorMessage });
           }
         });
       }

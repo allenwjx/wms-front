@@ -17,26 +17,32 @@ App({
 
   configReq() {
     let _this = this;
-    req.baseUrl(config.api.base)
-      .interceptor(res => {
-        switch (res.data.errorCode) {
+    req.baseUrl(config.api.base).interceptor(res => {
+      if (res.statusCode == 200) {
+        let resultCode = res.data.errorCode;
+        switch (resultCode) {
+          case null:
+          case 0:
+          case '':
+          case '0':
+            return true;
           case '-2001':
+            // 用户会话过期
             wx.showToast({
               icon: 'loading',
               title: '重新登录',
             })
-            _this.login()
+            _this.login();
             return false;
-          case null:
-          case '':
-            return true;
           default:
-            wx.showToast({
-              title: '操作失败',
-            })
-            return false;
+            return true;
         }
-      })
+      } else {
+        wx.showToast({
+          title: '操作失败，服务器异常'
+        })
+      }
+    })
   },
 
   /**
@@ -145,6 +151,9 @@ App({
           wx.setStorageSync('user', res.data.data);
           wx.setStorageSync('token', res.data.data.token);
           req.token(res.data.data.token);
+          wx.reLaunch({
+            url: '/' + getCurrentPages()[0].route
+          })
         } else {
           console.log('用户登录失败：' + res.data.errorMessage);
         }
