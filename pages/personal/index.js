@@ -10,6 +10,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    wxUser: null,
     mineMobile: '1595222222'
   },
 
@@ -18,7 +19,7 @@ Page({
    */
   onLoad: function (options) {
     wx.setNavigationBarTitle({ title: '我的' })
-    //this.setData({ userInfo: app.globalData.userInfo })
+    this.setData({ wxUser: app.globalData.wxUser});
   },
 
   bindMobileInput: function (e) {

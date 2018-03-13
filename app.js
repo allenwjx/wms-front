@@ -8,6 +8,7 @@ App({
 
   globalData: {
     user: null,
+    wxuser: null
   },
 
   onLaunch: function (options) {
@@ -96,7 +97,7 @@ App({
           success: function (res) {
             let rawUserInfo = JSON.parse(res.rawData);
             wx.setStorageSync('wxuser', rawUserInfo);
-            _this.login();
+            _this.globalData.wxUser = rawUserInfo;
           }
         })
       },
@@ -131,6 +132,7 @@ App({
         let rawUserInfo = JSON.parse(res.rawData);
         _this.doBGLogin(jsCode, rawUserInfo.nickName);
         wx.setStorageSync('wxuser', rawUserInfo);
+        _this.globalData.wxUser = rawUserInfo;
       }
     })
   },
