@@ -19,6 +19,7 @@ var config = {
     addressList: `/address/list`,
     setDefaultAddress: `/address/setDefault`,
     updateAddress: `/address/update`,
+    userBindMobile: `${base}/my/bind/mobile`,
     userLogin: `${base}/user/login`,
     userDetail: `${base}/user/detail`
   }

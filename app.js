@@ -96,6 +96,7 @@ App({
           success: function (res) {
             let rawUserInfo = JSON.parse(res.rawData);
             wx.setStorageSync('wxuser', rawUserInfo);
+            _this.login();
           }
         })
       },

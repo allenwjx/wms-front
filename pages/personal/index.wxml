@@ -7,6 +7,12 @@
     <text>{{userInfo.nickName}}</text>
   </view>
 
+  <button open-type="getPhoneNumber" bindgetphonenumber="bindMobile">绑定手机号</button>
+  <view class="page__bd" wx-if="{{mineMobile}}">
+    <input class="weui-cell" style='width: 100%' bindinput="bindMobileInput" type="number" value="{{mineMobile}}" placeholder="手机号/固定号码" />
+  </view>
+
+
   <view class="page__bd">
     <view class="weui-panel" style='margin-top: 10px;'>
       <view class="weui-panel__bd">
