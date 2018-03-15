@@ -18,12 +18,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let order = JSON.parse(options.order);
+    let price = JSON.parse(options.price);
     this.setData({
-      orderInfo: order
+      price: price
     });
-    // 计算订单价格
-    this.queryPrice();
+
     // 判断当前登录用户的支付方式。
     let user = wx.getStorageSync('user');
     if (user.paymentType != 'ONLINE') {
@@ -32,34 +31,7 @@ Page({
       });
     }
   },
-  /**
-   * 查询订单价格。
-   */
-  queryPrice: function() {
-    let self = this;
-    let order = self.data.orderInfo;
-    req.get(config.api.order + '/calculate', 
-      { 
-        province: order.receiverProvince, 
-        commodityId: order.inventoryId,
-        expressType: order.expressType,
-        commodityQuantity: order.commodityQuanity
-      })
-      .then(res => res.data)
-      .then(data => {
-        if (data.success) {
-          let result = data.data;
-          let price = {
-            firstPrice: result.firstPriceRmb,
-            additionalPrice: result.additionalPriceRmb,
-            total: result.totalRmb
-          };
-          self.setData({
-            price: price
-          });
-        }
-      });
-  },
+  
   /**
    * 如果是线上支付，则进行下单并跳转到支付页面
    */
@@ -69,23 +41,10 @@ Page({
   /**
    * 如果是线下，直接跳转到下单成功页面。
    */
-  submitOrder: function(e) {
-    let self = this;
-    self.data.orderInfo.firstWeightPrice = parseInt(self.data.price.firstPrice * 100);
-    self.data.orderInfo.additionalWeightPrice = parseInt(self.data.price.additionalPrice * 100);
-    self.data.orderInfo.totalPrice = parseInt(self.data.price.total * 100);
-    req.get(config.api.order + '/create',
-      self.data.orderInfo
-    )
-      .then(res => res.data)
-      .then(data => {
-        if (data.success) {
-          let result = data.data;
-          wx.navigateTo({
-            url: '/pages/inventory/success/index?type=order'
-          })
-        }
-      });
+  goList: function(e) {
+    wx.navigateTo({
+      url: '/pages/inventory/index'
+    })
   },
 
   /**

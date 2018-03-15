@@ -14,16 +14,12 @@ Page({
    * 页面的初始数据
    */
   data: {
-    commodity: {},
     showModalStatus: false,
     animationData: null,
     expresses: [],
     express: {},
-    commodityWeight: 0,
-    remark: '',
-    sender: {},
-    reciever: {},
-    showDefaultAddress: 0,
+    /**是否显示添加寄件人 */
+    showSelectAddress: 0,
     commodityInventory: {},
     orderInfo: {},
     errorMsg: ''
@@ -38,28 +34,25 @@ Page({
     // 加载默认寄件人地址
     this.retrieveDefaultSenderAddress();
     this.queryCommodity(options.id);
-    this.data.orderInfo.inventoryId = options.id;
-    
+
     // 加载快递公司列表
     this.listExpresses();
+    this.data.orderInfo.receiverProvince = "请选择地区";
   },
-  queryCommodity: function(id) {
+  queryCommodity: function (id) {
     let self = this;
-    req.get(config.api.inventory, {id: id})
+    req.get(config.api.inventory, { id: id })
       .then(res => res.data)
       .then(data => {
         if (data.success) {
-          self.setData({ commodityInventory: data.data});
+          self.setData({ commodityInventory: data.data });
           let inventory = data.data;
-          self.data.orderInfo.inventoryId = inventory.id;
-          self.data.orderInfo.commodityId = inventory.commodityId;
           self.data.orderInfo.commodityName = inventory.name;
-          
+          self.data.orderInfo.commodityId = inventory.commodityId;
         }
       });
-    
+
   },
-  
 
   /**
    * 获取默认寄件人地址
@@ -67,38 +60,53 @@ Page({
   retrieveDefaultSenderAddress: function () {
     var self = this;
     req.get(config.api.defaultAddress + '/SENDER')
-      .then(res => res.data.data)
+      .then(res => res.data)
       .then(data => {
-        if(!data) {
+        if (!data.success) {
           self.setData({
-            showDefaultAddress: 2
+            showSelectAddress: 1
           });
           return;
         }
-        let addressJson = data;
-        self.data.orderInfo.sender = data;
-        self.data.orderInfo.senderAddressId = data.id;
-        let sender = self.buildAddress(addressJson);
+        self.buildSender(data.data);
+        
         self.setData({
-          sender: sender,
-          showDefaultAddress: 0
+          showSelectAddress: 0
         });
       });
+  },
+  /**
+   * 构建sender
+   */
+  buildSender: function(sender) {
+    var self = this;
+    self.data.orderInfo.senderName = sender.name;
+    self.data.orderInfo.senderTel = sender.tel;
+    self.data.orderInfo.senderProvince = sender.province;
+    self.data.orderInfo.senderCity = sender.city;
+    self.data.orderInfo.senderRegion = sender.region;
+    self.data.orderInfo.senderAddressDetail = sender.detail;
+    self.data.orderInfo.senderCompany = sender.company;
+
+    self.setData({ orderInfo: self.data.orderInfo });
   },
 
   /**
    * 获取快递公司信息
    */
   listExpresses: function () {
-    let _this = this;
+    let self = this;
     req.get(config.api.expressList)
-      .then(res => res.data.data)
+      .then(res => res.data)
       .then(data => {
-        let expresses = _this.buildExpresses(data);
-        _this.setData({ expresses: expresses });
-        for (let i = 0, len = expresses.length; i < len; ++i) {
-          if (expresses[i].checked) {
-            _this.setData({ express: expresses[i] });
+        if (data.success) {
+          let expresses = self.buildExpresses(data.data);
+          self.setData({ expresses: expresses });
+
+          for (let i = 0, len = expresses.length; i < len; ++i) {
+            if (expresses[i].checked) {
+              self.setData({ express: expresses[i] });
+            }
           }
         }
       });
@@ -134,21 +142,6 @@ Page({
     })
   },
 
-  /**
-   * 省市区选择器级联
-   */
-  bindRegionChange: function (e) {
-    this.data.orderInfo.receiverProvince = e.detail.value[0];   
-    this.data.orderInfo.receiverCity = e.detail.value[1];   
-    this.data.orderInfo.receiverRegion = e.detail.value[2];   
-    let reciever = this.data.reciever;
-    reciever.province = e.detail.value[0];
-    reciever.city = e.detail.value[1];
-    reciever.region = e.detail.value[2];
-    this.setData({
-      reciever: reciever
-    });
-  },
 
   /**
    * 跳转到添加寄件人列表
@@ -167,17 +160,6 @@ Page({
     wx.navigateTo({
       url: '/pages/personal/addr/index?type=SENDER&edit=false&id=' + senderId
     });
-  },
-
-  /**
-   * 获取选择的商品类型
-   */
-  selectCommodity: function (e) {
-    var $data = e.currentTarget.dataset;
-    this.setData({
-      commodity: $data
-    });
-    this.hideModal();
   },
 
   /**
@@ -200,55 +182,59 @@ Page({
    * 提交快递申请
    */
   book: function (e) {
-    if (!this.data.orderInfo.sender) {
-      utils.popError(this, '请填写寄件人');
+    let self = this;
+    if (!self.validate()) {
       return;
+    }
+
+    req.post(config.api.order + '/book',
+      self.data.orderInfo
+    )
+      .then(res => res.data)
+      .then(data => {
+        if (data.success) {
+          let price = data.data;
+          // 跳转至订单明细确认页
+          wx.navigateTo({
+            url: '/pages/inventory/details/index?price=' + JSON.stringify(price)
+          })
+        } else {
+          wx.showToast({
+            title: data.errorMessage
+          })
+        }
+      });
+  },
+  /**
+   * 校验订单参数
+   */
+  validate: function () {
+    if (!this.data.orderInfo.senderName) {
+      utils.popError(this, '请填写寄件人');
+      return false;
     }
 
     if (!this.data.orderInfo.receiverName) {
       utils.popError(this, '请填写收件人');
-      return;
+      return false;
     }
     if (!this.data.orderInfo.receiverTel) {
       utils.popError(this, '请填写收件人联系方式');
-      return;
+      return false;
     }
     if (!this.data.orderInfo.receiverAddressDetail || !this.data.orderInfo.receiverProvince || !this.data.orderInfo.receiverCity || !this.data.orderInfo.receiverRegion) {
       utils.popError(this, '请填写收件地址');
-      return;
+      return false;
     }
     if (!this.data.orderInfo.expressType) {
       utils.popError(this, '请选择物流公司');
-      return;
+      return false;
     }
     if (!this.data.orderInfo.commodityQuanity || this.data.orderInfo.commodityQuanity <= 0 || this.data.commodityQuanity > this.data.commodityInventory.amount) {
-      utils.popError(this, '请填写商品数量');
-      return;
+      utils.popError(this, '商品数量不正确');
+      return false;
     }
-    this.data.orderInfo.commodityWeight = this.data.commodityInventory.weight * this.data.orderInfo.commodityQuanity;
-    let orderJson = JSON.stringify(this.data.orderInfo);
-
-    // 跳转至订单明细确认页
-    wx.navigateTo({
-      url: '/pages/inventory/details/index?order=' + orderJson
-    });
-  },
-
-  /**
-   * Address JSON to sender or receiver
-   */
-  buildAddress: function (addressJson) {
-    let address = {};
-    address.id = addressJson.id;
-    address.name = addressJson.name;
-    address.mobile = addressJson.tel;
-    address.company = addressJson.company;
-    address.province = addressJson.province;
-    address.city = addressJson.city;
-    address.region = addressJson.region;
-    address.address = addressJson.detail;
-    address.defaultSetting = addressJson.defaultSetting;
-    return address;
+    return true;
   },
 
   /**
@@ -262,6 +248,7 @@ Page({
       express.value = expressArrayJson[i].value;
       if (i == 0) {
         express.checked = true;
+        this.data.orderInfo.expressType = express.value;
       } else {
         express.checked = false;
       }
@@ -269,7 +256,7 @@ Page({
     }
     return expresses;
   },
-  
+
 
   /**
    * 呈现商品类型页面
@@ -289,6 +276,8 @@ Page({
      */
   bindCommodityAmount: function (e) {
     this.data.orderInfo.commodityQuanity = e.detail.value;
+    this.data.orderInfo.commodityWeight = e.detail.value * this.data.commodityInventory.weight;
+    
   },
   bindNameInput: function (e) {
     this.data.orderInfo.receiverName = e.detail.value;
@@ -304,6 +293,17 @@ Page({
 
   bindAddressInput: function (e) {
     this.data.orderInfo.receiverAddressDetail = e.detail.value;
+  },
+
+  /**
+   * 省市区选择器级联
+   */
+  bindRegionChange: function (e) {
+    this.data.orderInfo.receiverProvince = e.detail.value[0];
+    this.data.orderInfo.receiverCity = e.detail.value[1];
+    this.data.orderInfo.receiverRegion = e.detail.value[2];
+    this.setData({ orderInfo: this.data.orderInfo });
+    
   },
 
   bindRemark: function (e) {

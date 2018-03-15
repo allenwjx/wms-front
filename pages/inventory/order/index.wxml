@@ -16,48 +16,30 @@
               </view>
             </view>
             <!-- 选择寄件人 -->
-            <view class="weui-form-preview__bd" wx:if="{{showDefaultAddress == 0}}">
+            <view class="weui-form-preview__bd" wx:if="{{showSelectAddress == 0}}">
               <view class="weui-form-preview__item">
                 <view class="new-preview__label__item">寄件人</view>
-                <view class="new-preview__value">{{sender.name}}</view>
+                <view class="new-preview__value">{{orderInfo.senderName}}</view>
               </view>
               <view class="weui-form-preview__item">
                 <view class="new-preview__label__item">手机号</view>
-                <view class="new-preview__value">{{sender.mobile}}</view>
+                <view class="new-preview__value">{{orderInfo.senderTel}}</view>
               </view>
               <view class="weui-form-preview__item">
                 <view class="new-preview__label__item">公司名称</view>
-                <view class="new-preview__value">{{sender.company}}</view>
+                <view class="new-preview__value">{{orderInfo.senderCompany}}</view>
               </view>
               <view class="weui-form-preview__item">
                 <view class="new-preview__label__item">发货省市区</view>
-                <view class="new-preview__value">{{sender.province}} {{sender.city}} {{sender.region}}</view>
+                <view class="new-preview__value">{{orderInfo.senderProvince}} {{orderInfo.senderCity}} {{orderInfo.senderRegion}}</view>
               </view>
               <view class="weui-form-preview__item">
                 <view class="new-preview__label__item">详细地址</view>
-                <view class="new-preview__value">{{sender.address}}</view>
+                <view class="new-preview__value">{{orderInfo.senderAddressDetail}}</view>
               </view>
             </view>
-            <!-- /选择寄件人 -->
-            <!-- 默认寄件人 -->
-            <!-- <view wx:if="{{showDefaultAddress == 1}}">
-              <view class="weui-form-preview">
-                <view class="weui-form-preview__bd">
-                  <view class="weui-form-preview__item">
-                    <view class="weui-form-preview__label" style='color: #353535'>{{sender.name}}</view>
-                    <view class="new-preview__value" style='color: #353535'>{{sender.mobile}}</view>
-                  </view>
-                  <view class="weui-form-preview__item">
-                    <view class="weui-form-preview__label">{{sender.province}} {{sender.city}} {{sender.region}}</view>
-                    <view class="new-preview__value" style='color: #ff8000;' bindtap='navigateToSenders'>选择</view>
-                  </view>
-                  <view class="weui-form-preview__item">
-                    <view class="weui-form-preview__label" style='text-align-last: left'>{{sender.address}}</view>
-                  </view>
-                </view>
-              </view>
-            </view> -->
-             <view wx:if="{{showDefaultAddress == 2}}" class="weui-cell">
+
+             <view wx:if="{{showSelectAddress == 1}}" class="weui-cell">
               <view class="weui-cell__bd">
                 <text>还未设置寄件人信息</text>
               </view>
@@ -92,7 +74,7 @@
               <view class="weui-cell__bd">
                 <picker mode="region" bindchange="bindRegionChange">
                   <view class="picker">
-                    <view class="weui-input">{{reciever.province}} {{reciever.city}} {{reciever.region}}</view>
+                    <view class="weui-input">{{orderInfo.receiverProvince}} {{orderInfo.receiverCity}} {{orderInfo.receiverRegion}}</view>
                   </view>
                 </picker>
               </view>
@@ -100,7 +82,7 @@
                 <image src="/images/location.png" class="location" bindtap="bingAddressTap" />
               </view>
             </view>
-            <input class="weui-cell" style='width: 100%' bindinput="bindAddressInput" placeholder="详细地址（街道门牌号）" value="{{reciever.address}}" />
+            <input class="weui-cell" style='width: 100%' bindinput="bindAddressInput" placeholder="详细地址（街道门牌号）" />
           </view>
         </view>
       </view>
@@ -126,13 +108,13 @@
                   <view class="new-preview__value">{{commodityInventory.amount}}/ {{commodityInventory.unit}}</view>
               </view>
             </view>
-            <!-- 包裹重量 -->
+            <!-- 包裹数量 -->
             <view class='weui-cell'>
               <view class="weui-cell__bd" style='display: flex'>
                 <input class="weui-cell" style='width: 100%' bindinput="bindCommodityAmount" type="digit" placeholder="填写商品数量" />
               </view>
             </view>
-            <!-- /包裹重量 -->
+            <!-- /包裹数量 -->
             <!-- 包裹备注 -->
             <view class='weui-cell'>
               <view class="weui-cell__bd">
