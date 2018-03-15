@@ -50,8 +50,11 @@ Page({
       .then(data => {
         if (data.success) {
           self.setData({ commodityInventory: data.data});
-          self.data.orderInfo.commodityId = data.data.commodityId;
-          self.data.orderInfo.inventory = data.data;
+          let inventory = data.data;
+          self.data.orderInfo.inventoryId = inventory.id;
+          self.data.orderInfo.commodityId = inventory.commodityId;
+          self.data.orderInfo.commodityName = inventory.name;
+          
         }
       });
     
@@ -74,6 +77,7 @@ Page({
         }
         let addressJson = data;
         self.data.orderInfo.sender = data;
+        self.data.orderInfo.senderAddressId = data.id;
         let sender = self.buildAddress(addressJson);
         self.setData({
           sender: sender,
@@ -221,10 +225,9 @@ Page({
       utils.popError(this, '请填写商品数量');
       return;
     }
-    
+    this.data.orderInfo.commodityWeight = this.data.commodityInventory.weight * this.data.orderInfo.commodityQuanity;
     let orderJson = JSON.stringify(this.data.orderInfo);
 
-    // TODO 创建订单
     // 跳转至订单明细确认页
     wx.navigateTo({
       url: '/pages/inventory/details/index?order=' + orderJson
@@ -314,14 +317,12 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    console.log("onReady");
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    console.log("onShow");
     // 加载默认寄件人地址
     this.retrieveDefaultSenderAddress();
   },
@@ -330,34 +331,29 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-    console.log("onHide");
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-    console.log("onUnload");
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    console.log("onPullDownRefresh");
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    console.log("onReachBottom");
   },
 
   /**
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-    console.log("onShareAppMessage");
   }
 })

@@ -18,7 +18,7 @@ Page({
    */
   onLoad: function (options) {
     this.queryInventory('');
-
+    console.log(wx.getStorageSync('wxuser'));
   },
   queryInventory: function (name) {
     let self = this;
