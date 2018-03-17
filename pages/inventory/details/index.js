@@ -42,8 +42,8 @@ Page({
    * 如果是线下，直接跳转到下单成功页面。
    */
   goList: function(e) {
-    wx.navigateTo({
-      url: '/pages/inventory/index'
+    wx.navigateBack({
+      delta: 2
     })
   },
 

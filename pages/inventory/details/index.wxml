@@ -22,13 +22,12 @@
       </view>
 
       <view class="weui-form-preview__ft">
-        <navigator wx:if="{{paymentType == 0}}" bindtap='payment' class="new-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active">
-          <text>支付</text>
-        </navigator>
-
-        <navigator wx:if="{{paymentType != 0}}" url="/pages/inventory/index" class="new-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active">
+        <view  wx:if="{{paymentType == 0}}" bindtap='payment' class="new-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active">
+            <text>支付</text>
+        </view>
+        <view wx:if="{{paymentType != 0}}" bindtap='goList' class="new-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active">
           <text>返回</text>
-        </navigator>
+        </view>
       </view>
     </view>
   </view>

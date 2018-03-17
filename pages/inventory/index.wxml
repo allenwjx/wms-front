@@ -19,11 +19,13 @@
             <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="hideInput">取消</view>
         </view>
         <view class="weui-cells searchbar-result">
+          <scroll-view class="scroll-view_H" scroll-x style="width: 100%" >
             <navigator wx:for="{{inventoryList}}" wx:key="index" wx:for-item="hint" url="/pages/inventory/order/index?id={{hint.id}}" class="weui-cell" hover-class="weui-cell_active">
                 <view class="weui-cell__bd">
                     <view>{{hint.name}} : {{hint.amount}} {{hint.unit}}</view>
                 </view>
             </navigator>
+          </scroll-view>
         </view>
   </view>
 </view>
