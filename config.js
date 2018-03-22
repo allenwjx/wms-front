@@ -21,7 +21,9 @@ var config = {
     updateAddress: `/address/update`,
     userBindMobile: `${base}/my/bind/mobile`,
     userLogin: `${base}/user/login`,
-    userDetail: `${base}/user/detail`
+    userDetail: `${base}/user/detail`,
+    inventory: `/inventory`,
+    order: `/order`
   }
 };
 

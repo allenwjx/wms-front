@@ -6,7 +6,8 @@ const METHOD = {
 }
 class Request {
   _header = {
-    token: null
+    token: null,
+    "X-Requested-With": "XMLHttpRequest"
   }
   _baseUrl = null
 
