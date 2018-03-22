@@ -96,6 +96,7 @@ App({
         wx.getUserInfo({
           success: function (res) {
             let rawUserInfo = JSON.parse(res.rawData);
+            console.log(rawUserInfo);
             wx.setStorageSync('wxuser', rawUserInfo);
             _this.globalData.wxUser = rawUserInfo;
           }
